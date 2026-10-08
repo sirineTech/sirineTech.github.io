@@ -1,1 +1,1589 @@
 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111827">
+  <meta name="description" content="CV interactif de Sirine Bensalah - IA, IoT, systèmes embarqués et logiciel.">
+  <title>Sirine Bensalah | CV interactif</title>
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #111827;
+      --muted: #64748b;
+      --line: #d9e1ea;
+      --soft-line: #e9eef4;
+      --paper: #ffffff;
+      --canvas: #f5f7fa;
+      --navy: #17233f;
+      --blue: #2563eb;
+      --blue-soft: #eaf1ff;
+      --cyan: #38bdf8;
+      --ease: cubic-bezier(.22, .76, .28, 1);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { background: #e8edf3; }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 50% -10%, rgba(255, 255, 255, .95), transparent 42%),
+        #e8edf3;
+      font-family: 'Manrope', Arial, sans-serif;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    button, a { font: inherit; }
+
+    button { cursor: pointer; }
+
+    button:focus-visible, a:focus-visible {
+      outline: 3px solid rgba(37, 99, 235, .35);
+      outline-offset: 4px;
+    }
+
+    .app-header {
+      position: fixed;
+      z-index: 40;
+      top: 0;
+      right: 0;
+      left: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 30px;
+      pointer-events: none;
+    }
+
+    .menu-toggle, .header-mark, .header-progress { pointer-events: auto; }
+
+    .menu-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: auto;
+      height: 48px;
+      padding: 0 15px;
+      border: 1px solid rgba(17, 24, 39, .14);
+      border-radius: 0;
+      color: var(--ink);
+      background: rgba(255, 255, 255, .74);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      backdrop-filter: blur(12px);
+      transition: color .25s ease, background .25s ease, border-color .25s ease, transform .25s ease;
+    }
+
+    .menu-toggle:hover {
+      color: #fff;
+      border-color: var(--navy);
+      background: var(--navy);
+      transform: rotate(4deg);
+    }
+
+    .header-mark {
+      position: absolute;
+      left: 50%;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      transform: translateX(-50%);
+      white-space: nowrap;
+    }
+
+    .header-progress {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .14em;
+    }
+
+    .progress-track {
+      position: relative;
+      width: 110px;
+      height: 2px;
+      overflow: hidden;
+      background: rgba(100, 116, 139, .22);
+    }
+
+    .progress-value {
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 11.11%;
+      background: var(--blue);
+      transition: width .5s var(--ease);
+    }
+
+    .cv-stage {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 100vw;
+      height: 100dvh;
+      padding: 46px 20px 30px;
+    }
+
+    .cv-page {
+      position: absolute;
+      width: min(78vw, 840px, calc(88dvh * .707));
+      aspect-ratio: .707;
+      overflow: hidden;
+      border: 1px solid rgba(17, 24, 39, .11);
+      background: var(--paper);
+      box-shadow: 0 28px 80px rgba(30, 49, 80, .17), 0 2px 10px rgba(30, 49, 80, .06);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translate3d(26px, 0, 0) scale(.986);
+      transition: opacity .52s var(--ease), transform .52s var(--ease), visibility 0s linear .52s;
+    }
+
+    .cv-page.active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: none;
+      transition-delay: 0s;
+    }
+
+    .cv-page.page-entering {
+      visibility: visible;
+      opacity: 0;
+      pointer-events: auto;
+    }
+
+    .cv-page.page-entering.page-entering-now {
+      opacity: 1;
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+
+    .cv-page.active.page-exiting-now {
+      opacity: 0;
+      transform: translate3d(-26px, 0, 0) scale(.986);
+    }
+
+    .cv-page.page-entering.from-left { transform: translate3d(-26px, 0, 0) scale(.986); }
+    .cv-page.active.page-exiting-now.to-right { transform: translate3d(26px, 0, 0) scale(.986); }
+
+    .page-shell {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      padding: clamp(30px, 5.4%, 58px) clamp(28px, 7.5%, 72px) clamp(23px, 5%, 52px);
+    }
+
+    .page-content {
+      min-height: 0;
+      overflow: auto;
+      overflow-wrap: anywhere;
+      scrollbar-width: thin;
+      scrollbar-color: #c7d2e0 transparent;
+      padding-right: 4px;
+    }
+
+    .page-content::-webkit-scrollbar { width: 4px; }
+    .page-content::-webkit-scrollbar-thumb { background: #c7d2e0; border-radius: 10px; }
+
+    .page-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: clamp(22px, 4%, 40px);
+    }
+
+    .section-number {
+      margin: 0 0 8px;
+      color: var(--blue);
+      font-size: clamp(9px, .76vw, 11px);
+      font-weight: 800;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+    }
+
+    .page-title {
+      max-width: 500px;
+      margin: 0;
+      font-size: clamp(25px, 3.3vw, 46px);
+      font-weight: 800;
+      letter-spacing: -.07em;
+      line-height: .98;
+    }
+
+    .page-stamp {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding-top: 4px;
+      color: var(--muted);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .page-stamp::before {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--blue);
+      content: '';
+    }
+
+    .eyebrow {
+      margin: 0 0 13px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+
+    .body-copy {
+      max-width: 560px;
+      margin: 0;
+      color: #475569;
+      font-size: clamp(11px, 1.15vw, 15px);
+      line-height: 1.75;
+    }
+
+    .page-footer {
+      display: flex;
+      flex: 0 0 auto;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      margin-top: auto;
+      padding-top: 18px;
+      border-top: 1px solid var(--soft-line);
+    }
+
+    .footer-index {
+      color: var(--muted);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .17em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .page-nav {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .page-nav button {
+      padding: 4px 0;
+      border: 0;
+      color: var(--ink);
+      background: transparent;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      transition: color .2s ease, transform .2s ease;
+    }
+
+    .page-nav button:hover:not(:disabled) { color: var(--blue); }
+    .page-nav button:first-child:hover:not(:disabled) { transform: translateX(-3px); }
+    .page-nav button:last-child:hover:not(:disabled) { transform: translateX(3px); }
+    .page-nav button:disabled { color: #c3ccd8; cursor: not-allowed; }
+
+    /* Cover */
+    .page-cover {
+      color: #fff;
+      border-color: #17233f;
+      background:
+        linear-gradient(125deg, rgba(255,255,255,.04), transparent 42%),
+        var(--navy);
+    }
+
+    .page-cover::before {
+      position: absolute;
+      top: -15%;
+      right: -22%;
+      width: 78%;
+      height: 75%;
+      border: 1px solid rgba(94, 195, 255, .27);
+      border-radius: 50%;
+      box-shadow: 0 0 0 32px rgba(56, 189, 248, .04), 0 0 0 76px rgba(56, 189, 248, .025);
+      content: '';
+      pointer-events: none;
+    }
+
+    .page-cover::after {
+      position: absolute;
+      right: 13%;
+      bottom: 16%;
+      width: 1px;
+      height: 42%;
+      background: linear-gradient(transparent, rgba(56, 189, 248, .42), transparent);
+      content: '';
+    }
+
+    .cover-shell { padding: clamp(32px, 8%, 82px) clamp(30px, 8.3%, 80px) clamp(28px, 6%, 62px); }
+
+    .cover-topline {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      color: rgba(255, 255, 255, .6);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+    }
+
+    .cover-main {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      justify-content: center;
+      max-width: 600px;
+      padding-bottom: 12%;
+    }
+
+    .cover-kicker {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 22px;
+      color: var(--cyan);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .21em;
+      text-transform: uppercase;
+    }
+
+    .cover-kicker::before {
+      display: block;
+      width: 34px;
+      height: 1px;
+      background: var(--cyan);
+      content: '';
+    }
+
+    .cover-header-row {
+      display: flex;
+      align-items: center;
+      gap: clamp(16px, 2.8vw, 32px);
+    }
+
+    .cover-portrait-wrapper {
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .cover-portrait {
+      width: clamp(76px, 10vw, 124px);
+      height: clamp(76px, 10vw, 124px);
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center 30%;
+      border: 2px solid rgba(56, 189, 248, .85);
+      box-shadow: 0 0 0 5px rgba(56, 189, 248, .18), 0 16px 36px rgba(0, 0, 0, .45);
+      display: block;
+    }
+
+    .cover-title {
+      max-width: 570px;
+      margin: 0;
+      font-size: clamp(33px, 5.1vw, 70px);
+      font-weight: 800;
+      letter-spacing: -.085em;
+      line-height: .92;
+    }
+
+    .cover-subtitle {
+      max-width: 420px;
+      margin: 22px 0 0;
+      color: #8db3e6;
+      font-size: clamp(12px, 1.4vw, 17px);
+      font-weight: 700;
+      letter-spacing: .08em;
+      line-height: 1.55;
+      text-transform: uppercase;
+    }
+
+    .cover-description {
+      max-width: 410px;
+      margin: 22px 0 0;
+      color: rgba(255, 255, 255, .68);
+      font-size: clamp(11px, 1.1vw, 14px);
+      line-height: 1.7;
+    }
+
+    .cover-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 11px;
+      margin-top: 30px;
+    }
+
+    .primary-button, .ghost-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 40px;
+      padding: 0 16px;
+      border: 1px solid transparent;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      transition: color .25s ease, background .25s ease, border-color .25s ease, transform .25s ease;
+    }
+
+    .primary-button {
+      color: var(--navy);
+      background: #fff;
+    }
+
+    .primary-button:hover { background: var(--cyan); transform: translateY(-2px); }
+
+    .ghost-button {
+      color: #fff;
+      border-color: rgba(255, 255, 255, .28);
+      background: transparent;
+    }
+
+    .ghost-button:hover:not(:disabled) { border-color: var(--cyan); color: var(--cyan); transform: translateY(-2px); }
+
+    .page-cover .is-disabled { opacity: .5; }
+
+    .cover-foot {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      color: rgba(255, 255, 255, .48);
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .cover-foot span:last-child { color: var(--cyan); }
+
+    /* Profile */
+    .profile-title-row { display: flex; align-items: center; gap: 16px; }
+    .profile-avatar {
+      flex-shrink: 0;
+      width: clamp(48px, 5.4vw, 72px);
+      height: clamp(48px, 5.4vw, 72px);
+      border-radius: 50%;
+      object-fit: cover;
+      object-position: center 30%;
+      border: 2px solid var(--blue);
+      box-shadow: 0 0 0 4px var(--blue-soft), 0 8px 20px rgba(30, 49, 80, .16);
+      display: block;
+    }
+    .profile-layout {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      align-items: start;
+      gap: clamp(26px, 7%, 58px);
+    }
+
+    .focus-panel {
+      margin-top: 4px;
+      padding: 17px 0 0 19px;
+      border-left: 2px solid var(--blue);
+    }
+
+    .focus-panel h3 {
+      margin: 0 0 17px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+
+    .focus-list {
+      display: grid;
+      gap: 10px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .focus-list li {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: #334155;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .09em;
+    }
+
+    .focus-list li::before {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: var(--blue);
+      content: '';
+    }
+
+    .profile-statement {
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(18px, 2vw, 28px);
+      font-weight: 700;
+      letter-spacing: -.055em;
+      line-height: 1.17;
+    }
+
+    .profile-detail { margin-top: 22px; }
+
+    .profile-coordinates {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 11px;
+      margin-top: clamp(36px, 9%, 80px);
+      padding-top: 18px;
+      border-top: 1px solid var(--soft-line);
+    }
+
+    .profile-extra {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 11px;
+      margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid var(--soft-line);
+    }
+
+    .coordinate-label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 8px;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .coordinate-value { font-size: 11px; font-weight: 800; }
+
+    /* Timeline */
+    .timeline {
+      position: relative;
+      margin: 0 0 0 7px;
+      padding-left: 25px;
+      border-left: 1px solid #cbd5e1;
+    }
+
+    .timeline-item {
+      position: relative;
+      display: grid;
+      grid-template-columns: 52px 1fr;
+      gap: 16px;
+      padding: 0 0 22px;
+    }
+
+    .timeline-item:last-child { padding-bottom: 0; }
+
+    .timeline-item::before {
+      position: absolute;
+      top: 3px;
+      left: -30px;
+      width: 9px;
+      height: 9px;
+      border: 2px solid var(--paper);
+      border-radius: 50%;
+      background: var(--blue);
+      box-shadow: 0 0 0 1px var(--blue);
+      content: '';
+    }
+
+    .timeline-year {
+      color: var(--blue);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .05em;
+    }
+
+    .timeline-year small {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 7px;
+      letter-spacing: .02em;
+    }
+
+    .timeline-heading {
+      margin: 0;
+      font-size: clamp(11px, 1.25vw, 15px);
+      font-weight: 800;
+      letter-spacing: -.025em;
+      line-height: 1.25;
+    }
+
+    .timeline-place {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    .timeline-copy {
+      margin: 6px 0 0;
+      color: #64748b;
+      font-size: 9px;
+      line-height: 1.55;
+    }
+
+    .experience-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0 30px;
+    }
+
+    .experience-grid .timeline { margin-left: 7px; }
+
+    .tag-row, .skills-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 9px;
+    }
+
+    .tag, .skill-token {
+      display: inline-flex;
+      align-items: center;
+      min-height: 20px;
+      padding: 0 7px;
+      border: 1px solid #dce5f0;
+      color: #475569;
+      background: #f8fafc;
+      font-size: 8px;
+      font-weight: 800;
+      letter-spacing: .03em;
+    }
+
+    /* Skills */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 25px 28px;
+    }
+
+    .skill-category {
+      padding-top: 14px;
+      border-top: 1px solid var(--line);
+    }
+
+    .skill-category:last-child { grid-column: 1 / -1; }
+
+    .skill-category h3 {
+      margin: 0;
+      color: var(--blue);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+
+    .skills-row { gap: 6px; margin-top: 11px; }
+
+    .skill-token {
+      min-height: 25px;
+      padding: 0 9px;
+      color: var(--ink);
+      background: #fff;
+    }
+
+    .skill-token:hover { border-color: #9bb7e9; color: var(--blue); }
+
+    /* Certifications */
+    .credentials-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin: -12px 0 22px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--soft-line);
+    }
+
+    .verified-label {
+      display: flex;
+      align-items: center;
+      color: var(--blue);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .16em;
+    }
+
+    .inline-link {
+      color: var(--blue);
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .11em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .inline-link:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+    .cert-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .cert-item {
+      position: relative;
+      min-height: 100px;
+      padding: 13px 13px 12px;
+      border: 1px solid var(--line);
+      background: #fff;
+      transition: border-color .25s ease, transform .25s ease, box-shadow .25s ease;
+    }
+
+    .cert-item:hover {
+      border-color: #9cb8ed;
+      box-shadow: 0 8px 18px rgba(44, 69, 103, .08);
+      transform: translateY(-2px);
+    }
+
+    .cert-item-muted { background: #fbfcfe; }
+
+    .cert-item-muted .cert-issuer { margin-top: 22px; }
+
+    .cert-item h3 {
+      margin: 0 0 8px;
+      padding-right: 13px;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: -.01em;
+      line-height: 1.3;
+    }
+
+    .cert-issuer, .cert-date {
+      margin: 0;
+      color: var(--muted);
+      font-size: 8px;
+      line-height: 1.35;
+    }
+
+    .cert-date { margin-top: 2px; color: var(--blue); font-weight: 700; }
+
+    .cert-check {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      color: #16a34a;
+      font-size: 8px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .cert-link {
+      display: inline-block;
+      margin-top: 9px;
+      padding: 0;
+      border: 0;
+      color: var(--blue);
+      background: transparent;
+      font-size: 8px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .cert-link.is-disabled { color: #a4afbd; cursor: not-allowed; }
+
+    /* Projects */
+    .project-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+
+    .project-item {
+      display: flex;
+      min-height: 128px;
+      flex-direction: column;
+      padding: 14px;
+      border-top: 2px solid var(--ink);
+      background: #fbfcfe;
+      transition: border-color .25s ease, background .25s ease, transform .25s ease;
+    }
+
+    .project-item:hover {
+      border-color: var(--blue);
+      background: #f4f8ff;
+      transform: translateY(-2px);
+    }
+
+    .project-code {
+      margin-bottom: 17px;
+      color: var(--blue);
+      font-size: 8px;
+      font-weight: 800;
+      letter-spacing: .15em;
+    }
+
+    .project-item h3 {
+      margin: 0;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      line-height: 1.25;
+    }
+
+    .project-item p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 8px;
+      line-height: 1.5;
+    }
+
+    .project-item .project-stack,
+    .project-item .project-copy {
+      color: #64748b;
+      font-size: 8px;
+      line-height: 1.5;
+    }
+
+    .project-item strong { color: var(--ink); font-weight: 800; }
+
+    .project-item .tag-row { margin-top: auto; padding-top: 11px; }
+
+    .project-item .tag { min-height: 18px; padding: 0 6px; font-size: 7px; }
+
+    /* Featured */
+    .featured-intro {
+      display: grid;
+      grid-template-columns: 1fr .8fr;
+      gap: 30px;
+      align-items: end;
+      margin-bottom: 28px;
+      padding-bottom: 25px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .featured-name {
+      margin: 0;
+      font-size: clamp(25px, 3.2vw, 45px);
+      font-weight: 800;
+      letter-spacing: -.075em;
+      line-height: .98;
+    }
+
+    .featured-subtitle {
+      margin: 9px 0 0;
+      color: var(--blue);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .featured-mark {
+      justify-self: end;
+      width: 100px;
+      height: 100px;
+      border: 1px solid #a9c0e6;
+      border-radius: 50%;
+      background: radial-gradient(circle, #dceaff 0 7%, transparent 8% 23%, #edf4ff 24% 25%, transparent 26% 50%, #dceaff 51% 52%, transparent 53%);
+      box-shadow: 0 0 0 10px #f6f9ff, 0 0 0 11px #dce8f8;
+    }
+
+    .process-list {
+      display: grid;
+      gap: 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .process-step {
+      display: grid;
+      grid-template-columns: 28px 108px 1fr;
+      gap: 14px;
+      align-items: start;
+      padding: 15px 0;
+      border-bottom: 1px solid var(--soft-line);
+    }
+
+    .process-number { color: var(--blue); font-size: 10px; font-weight: 800; }
+
+    .process-step h3 {
+      margin: 0;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+
+    .process-step p {
+      margin: 0;
+      color: #64748b;
+      font-size: 10px;
+      line-height: 1.5;
+    }
+
+    .featured-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 22px;
+    }
+
+    .featured-tag {
+      padding: 8px 10px;
+      color: #234a94;
+      background: var(--blue-soft);
+      font-size: 8px;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    /* Contact */
+    .contact-page .page-shell { justify-content: space-between; }
+
+    .contact-main { flex: 1; padding-top: 8%; }
+
+    .contact-title {
+      max-width: 540px;
+      margin: 0;
+      font-size: clamp(39px, 6.2vw, 80px);
+      font-weight: 800;
+      letter-spacing: -.1em;
+      line-height: .9;
+    }
+
+    .contact-title span { color: var(--blue); }
+
+    .contact-subtitle {
+      max-width: 360px;
+      margin: 23px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .contact-links {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      margin-top: clamp(42px, 10%, 95px);
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+
+    .contact-link-label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--muted);
+      font-size: 8px;
+      font-weight: 800;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+    }
+
+    .contact-link-value {
+      display: block;
+      color: var(--ink);
+      font-size: 10px;
+      font-weight: 800;
+      line-height: 1.4;
+      text-decoration: none;
+    }
+
+    .contact-link-value:hover { color: var(--blue); }
+
+    .contact-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+
+    .contact-actions .action-button {
+      display: inline-flex;
+      min-height: 37px;
+      align-items: center;
+      padding: 0 13px;
+      border: 1px solid var(--line);
+      color: var(--ink);
+      background: #fff;
+      font-size: 8px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      transition: border-color .2s ease, color .2s ease, transform .2s ease;
+      text-decoration: none;
+    }
+
+    .contact-actions .action-button:hover:not(:disabled) { border-color: var(--blue); color: var(--blue); transform: translateY(-2px); }
+    .contact-actions .action-button:disabled { color: #aab5c2; cursor: not-allowed; }
+
+    /* Side menu */
+    .menu-overlay {
+      position: fixed;
+      z-index: 49;
+      inset: 0;
+      background: rgba(11, 19, 35, .43);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity .4s ease, visibility 0s linear .4s;
+      backdrop-filter: blur(3px);
+    }
+
+    .menu-overlay.is-open { opacity: 1; visibility: visible; transition-delay: 0s; }
+
+    .side-menu {
+      position: fixed;
+      z-index: 50;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      display: flex;
+      width: min(405px, 91vw);
+      flex-direction: column;
+      padding: 32px clamp(23px, 5vw, 50px) 28px;
+      color: #fff;
+      background: var(--navy);
+      box-shadow: 20px 0 70px rgba(9, 18, 35, .2);
+      transform: translateX(-102%);
+      transition: transform .48s var(--ease);
+    }
+
+    .side-menu.is-open { transform: translateX(0); }
+
+    .menu-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 20px; padding-bottom: 27px; border-bottom: 1px solid rgba(255,255,255,.15); }
+
+    .menu-brand {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -.04em;
+    }
+
+    .menu-subtitle { margin: 5px 0 0; color: #8da8ce; font-size: 9px; font-weight: 800; letter-spacing: .17em; text-transform: uppercase; }
+
+    .menu-close {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border: 1px solid rgba(255,255,255,.23);
+      color: #fff;
+      background: transparent;
+      font-size: 8px;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      transition: background .2s ease, color .2s ease;
+    }
+
+    .menu-close:hover { color: var(--navy); background: #fff; }
+
+    .menu-list { display: grid; flex: 1; align-content: center; margin: 16px 0; }
+
+    .menu-item {
+      display: grid;
+      grid-template-columns: 30px 1fr;
+      gap: 13px;
+      align-items: center;
+      padding: 13px 0;
+      border: 0;
+      border-bottom: 1px solid rgba(255,255,255,.11);
+      color: rgba(255,255,255,.55);
+      background: transparent;
+      text-align: left;
+      transition: color .2s ease, padding-left .25s ease;
+    }
+
+    .menu-item:hover, .menu-item.is-active { color: #fff; padding-left: 7px; }
+    .menu-item.is-active .menu-item-label { color: var(--cyan); }
+
+    .menu-item-number { font-size: 9px; font-weight: 800; letter-spacing: .1em; }
+    .menu-item-label { font-size: 11px; font-weight: 800; letter-spacing: .16em; }
+
+    .menu-foot { padding-top: 18px; border-top: 1px solid rgba(255,255,255,.15); }
+
+    .menu-foot-links { display: flex; flex-wrap: wrap; gap: 10px 18px; margin-top: 15px; }
+
+    .menu-foot-button {
+      display: inline-block;
+      padding: 0;
+      border: 0;
+      color: #9db5d7;
+      background: transparent;
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: .1em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    .menu-foot-button:hover:not(:disabled) { color: var(--cyan); }
+    .menu-foot-button:disabled { color: rgba(157,181,215,.45); cursor: not-allowed; }
+
+    .menu-note { margin: 0; color: rgba(255,255,255,.38); font-size: 9px; line-height: 1.5; }
+
+    .reveal-item { opacity: 0; transform: translateY(9px); }
+    .reveal-item.is-revealed { opacity: 1; transform: translateY(0); transition: opacity .48s var(--ease), transform .48s var(--ease); }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
+    }
+
+    @media (max-width: 720px) {
+      body { overflow: hidden; }
+      .app-header { padding: 16px 16px; }
+      .menu-toggle { width: 43px; height: 43px; }
+      .header-mark { display: none; }
+      .header-progress { gap: 7px; font-size: 9px; }
+      .progress-track { width: 64px; }
+      .cv-stage { padding: 0; }
+      .cv-page {
+        width: calc(100vw - 16px);
+        height: calc(100dvh - 16px);
+        aspect-ratio: auto;
+      }
+      .page-shell { padding: 75px 23px 20px; }
+      .page-header { margin-bottom: 23px; }
+      .page-stamp { display: none; }
+      .page-footer { padding-top: 13px; }
+      .page-nav { gap: 11px; }
+      .page-nav button { font-size: 8px; letter-spacing: .1em; }
+      .cover-shell { padding: 30px 25px 23px; }
+      .cover-topline { font-size: 8px; }
+      .cover-main { padding-bottom: 17%; }
+      .cover-title { max-width: 280px; font-size: clamp(28px, 8.5vw, 44px); }
+      .cover-header-row { gap: 14px; }
+      .cover-portrait { width: 70px; height: 70px; }
+      .cover-subtitle { max-width: 260px; font-size: 10px; }
+      .cover-description { max-width: 285px; font-size: 11px; }
+      .cover-actions { max-width: 270px; margin-top: 24px; }
+      .primary-button, .ghost-button { min-height: 37px; padding: 0 11px; font-size: 8px; }
+      .profile-layout, .featured-intro { grid-template-columns: 1fr; gap: 27px; }
+      .profile-coordinates { margin-top: 44px; }
+      .profile-extra { grid-template-columns: 1fr; }
+      .focus-panel { padding-left: 15px; }
+      .experience-grid { grid-template-columns: 1fr; gap: 0; }
+      .experience-grid .timeline { padding-bottom: 22px; }
+      .experience-grid .timeline:last-child { padding-bottom: 0; }
+      .skills-grid { gap: 18px; }
+      .skill-category:last-child { grid-column: auto; }
+      .cert-grid { grid-template-columns: 1fr; gap: 8px; }
+      .cert-item { min-height: 91px; padding: 11px; }
+      .project-grid { grid-template-columns: 1fr; gap: 8px; }
+      .project-item { min-height: 123px; padding: 11px; }
+      .project-code { margin-bottom: 12px; }
+      .process-step { grid-template-columns: 22px 83px 1fr; gap: 8px; }
+      .featured-mark { justify-self: start; width: 75px; height: 75px; }
+      .contact-main { padding-top: 10%; }
+      .contact-links { grid-template-columns: 1fr; gap: 13px; margin-top: 55px; }
+      .contact-actions { margin-top: 20px; }
+    }
+
+    @media (max-width: 400px) {
+      .page-shell { padding-right: 18px; padding-left: 18px; }
+      .cover-shell { padding-right: 21px; padding-left: 21px; }
+      .cover-title { font-size: 34px; }
+      .project-grid { grid-template-columns: 1fr; }
+      .project-item { min-height: 132px; }
+      .process-step { grid-template-columns: 20px 72px 1fr; }
+    }
+
+    @media print {
+      @page { size: A4; margin: 0; }
+      html, body { width: 100%; height: 100%; background: #fff; overflow: visible; }
+      .app-header, .menu-overlay, .side-menu { display: none !important; }
+      .cv-stage { display: block; width: 100%; height: auto; padding: 0; }
+      .cv-page { display: block !important; position: relative; width: 210mm; height: 297mm; max-width: none; aspect-ratio: auto; box-shadow: none; border: 0; opacity: 1; visibility: visible; transform: none; page-break-after: always; }
+      .cv-page:last-child { page-break-after: auto; }
+      .page-content { overflow: visible; }
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header" aria-label="CV controls">
+    <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Open menu" aria-controls="side-menu" aria-expanded="false">Menu</button>
+    <div class="header-mark">CV interactif / S.B.</div>
+    <div class="header-progress" aria-label="CV progress">
+      <span id="page-status">01 / 09</span>
+      <span class="progress-track" aria-hidden="true"><span class="progress-value" id="progress-value"></span></span>
+    </div>
+  </header>
+
+  <div class="menu-overlay" id="menu-overlay" aria-hidden="true"></div>
+  <aside class="side-menu" id="side-menu" aria-label="CV page menu" aria-hidden="true">
+    <div class="menu-heading">
+      <div>
+        <p class="menu-brand">SIRINE BENSALAH</p>
+        <p class="menu-subtitle">Interactive CV</p>
+      </div>
+      <button class="menu-close" id="menu-close" type="button" aria-label="Close menu">Fermer</button>
+    </div>
+    <nav class="menu-list" aria-label="CV pages">
+      <button class="menu-item" type="button" data-page-target="1"><span class="menu-item-number">01</span><span class="menu-item-label">PROFIL</span></button>
+      <button class="menu-item" type="button" data-page-target="2"><span class="menu-item-number">02</span><span class="menu-item-label">FORMATION</span></button>
+      <button class="menu-item" type="button" data-page-target="3"><span class="menu-item-number">03</span><span class="menu-item-label">EXPÉRIENCE</span></button>
+      <button class="menu-item" type="button" data-page-target="4"><span class="menu-item-number">04</span><span class="menu-item-label">COMPÉTENCES</span></button>
+      <button class="menu-item" type="button" data-page-target="5"><span class="menu-item-number">05</span><span class="menu-item-label">CERTIFICATIONS</span></button>
+      <button class="menu-item" type="button" data-page-target="6"><span class="menu-item-number">06</span><span class="menu-item-label">PROJETS</span></button>
+      <button class="menu-item" type="button" data-page-target="7"><span class="menu-item-number">07</span><span class="menu-item-label">PROJET PHARE</span></button>
+      <button class="menu-item" type="button" data-page-target="8"><span class="menu-item-number">08</span><span class="menu-item-label">CONTACT</span></button>
+    </nav>
+    <div class="menu-foot">
+      <p class="menu-note">Navigate with the menu, keyboard arrows or a swipe.</p>
+      <div class="menu-foot-links">
+        <button class="menu-foot-button" type="button" data-print>Download CV</button>
+        <a class="menu-foot-button" href="https://linkedin.com/in/sirine-bensalah" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a class="menu-foot-button" href="mailto:sirine.bensalah@enicar.ucar.tn">Email</a>
+      </div>
+    </div>
+  </aside>
+
+  <main class="cv-stage" id="cv-stage">
+    <section class="cv-page page-cover active" id="page-cover" data-page="0" aria-labelledby="cover-title" aria-hidden="false">
+      <div class="page-shell cover-shell">
+        <div class="cover-topline"><span>CV interactif / 2026</span><span>01 — 09</span></div>
+        <div class="cover-main">
+          <p class="cover-kicker">Ingénieure diplômée</p>
+          <div class="cover-header-row">
+            <h1 class="cover-title" id="cover-title">SIRINE<br>BENSALAH</h1>
+            <div class="cover-portrait-wrapper">
+              <img class="cover-portrait" src="assets/sirine.jpg" alt="Sirine Bensalah">
+            </div>
+          </div>
+          <p class="cover-subtitle">IA • IoT • Systèmes embarqués • Logiciel (Infotronique)</p>
+          <p class="cover-description">Building intelligent systems at the intersection of AI, embedded technologies and software.</p>
+          <div class="cover-actions">
+            <button class="primary-button" id="open-cv" type="button">Open CV</button>
+            <button class="ghost-button" type="button" data-print>Download PDF</button>
+            <a class="ghost-button" href="https://linkedin.com/in/sirine-bensalah" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          </div>
+        </div>
+        <div class="cover-foot"><span>Bizerte / Tunis-Soukra, Tunisie</span><span>Scroll / swipe / select</span></div>
+      </div>
+    </section>
+
+    <section class="cv-page" id="page-profile" data-page="1" aria-labelledby="profile-title" aria-hidden="true">
+      <div class="page-shell">
+        <header class="page-header">
+          <div class="profile-title-row"><img class="profile-avatar" src="assets/sirine.jpg" alt="Sirine Bensalah"><div><p class="section-number">01 — Profil</p><h2 class="page-title" id="profile-title">Profil</h2></div></div>
+          <span class="page-stamp">Vue professionnelle</span>
+        </header>
+        <div class="page-content">
+          <div class="profile-layout">
+            <div class="reveal-item">
+              <p class="eyebrow">Ingénieure à l'intersection des systèmes</p>
+              <p class="profile-statement">Concevoir des systèmes intelligents de bout en bout, de l'acquisition capteur jusqu'à l'application logicielle.</p>
+              <p class="body-copy profile-detail">Ingénieure diplômée de l'ENICarthage en Génie des Systèmes Infotroniques, avec un double diplôme avec le Master de Recherche EEA, parcours ARTI, en 2026. À l'intersection de l'IA, des systèmes embarqués / IoT et du logiciel, je travaille sur l'acquisition de capteurs, les protocoles MQTT, CAN et Modbus, les passerelles Linux embarqué, les modèles Machine / Deep Learning, les applications full-stack et les pipelines DevOps.</p>
+              <p class="body-copy profile-detail">Bases solides en réseaux (LAN/WLAN/VLAN, Wireshark), administration systèmes (Linux, Microsoft 365) et cybersécurité (cryptographie post-quantique, authentification multifacteur, tests d'intrusion Red Team). Méthodes Agile/Scrum et rédaction de rapports techniques.</p>
+              <div class="profile-coordinates">
+                <div><span class="coordinate-label">Localisation</span><span class="coordinate-value">Bizerte / Tunis-Soukra, Tunisie</span></div>
+                <div><span class="coordinate-label">Formation</span><span class="coordinate-value">ENICarthage · 2026</span></div>
+              </div>
+              <div class="profile-extra">
+                <div><span class="coordinate-label">Langues</span><span class="coordinate-value">Français : courant · Anglais : très bon (rédaction professionnelle et technique) · Arabe : langue maternelle</span></div>
+                <div><span class="coordinate-label">Centres d'intérêt</span><span class="coordinate-value">Enseignement de l'informatique · Sport · Équitation</span></div>
+              </div>
+            </div>
+            <aside class="focus-panel reveal-item" aria-label="Core focus areas">
+              <h3>Core Focus</h3>
+              <ul class="focus-list">
+                <li>AI</li>
+                <li>IoT</li>
+                <li>Systèmes embarqués</li>
+                <li>Logiciel</li>
+                <li>Réseaux</li>
+              </ul>
+            </aside>
+          </div>
+        </div>
+        <div class="page-footer"><span class="footer-index">Sirine Bensalah / Profil</span><nav class="page-nav" aria-label="Page navigation"><button type="button" data-prev>Précédent</button><span class="footer-index page-counter">02 / 09</span><button type="button" data-next>Suivant</button></nav></div>
+      </div>
+    </section>
+
+    <section class="cv-page" id="page-education" data-page="2" aria-labelledby="education-title" aria-hidden="true">
+      <div class="page-shell">
+        <header class="page-header"><div><p class="section-number">02 — Formation</p><h2 class="page-title" id="education-title">Formation</h2></div><span class="page-stamp">Parcours académique</span></header>
+        <div class="page-content">
+          <div class="timeline" aria-label="Education timeline">
+            <article class="timeline-item reveal-item"><div class="timeline-year">2026<br><small>07/2026</small></div><div><h3 class="timeline-heading">Diplôme d'ingénieur en Génie des Systèmes Infotroniques</h3><p class="timeline-place">ENICarthage · diplômée 07/2026</p></div></article>
+            <article class="timeline-item reveal-item"><div class="timeline-year">2026</div><div><h3 class="timeline-heading">Master de Recherche EEA, parcours ARTI (Automatique, Robotique &amp; Traitement de l'Information) — double diplôme</h3><p class="timeline-place">ENICarthage</p><p class="timeline-copy">Traitement du signal, automatique, robotique, IA.</p></div></article>
+            <article class="timeline-item reveal-item"><div class="timeline-year">2022</div><div><h3 class="timeline-heading">Licence Nationale en Électronique, Électrotechnique &amp; Automatique — Systèmes Embarqués</h3><p class="timeline-place">ISSAT Mateur</p><p class="timeline-copy">Électronique analogique / numérique, électronique de puissance, asservissement, microcontrôleurs, réseaux et communication.</p></div></article>
+            <article class="timeline-item reveal-item"><div class="timeline-year">2019</div><div><h3 class="timeline-heading">Baccalauréat Technique</h3><p class="timeline-place">Lycée Ibnou Sina, Menzel Bourguiba</p></div></article>
+          </div>
+        </div>
+        <div class="page-footer"><span class="footer-index">Sirine Bensalah / Formation</span><nav class="page-nav" aria-label="Page navigation"><button type="button" data-prev>Précédent</button><span class="footer-index page-counter">03 / 09</span><button type="button" data-next>Suivant</button></nav></div>
+      </div>
+    </section>
+
+    <section class="cv-page" id="page-experience" data-page="3" aria-labelledby="experience-title" aria-hidden="true">
+      <div class="page-shell">
+        <header class="page-header"><div><p class="section-number">03 — Expérience</p><h2 class="page-title" id="experience-title">Expérience</h2></div><span class="page-stamp">Ingénierie appliquée</span></header>
+        <div class="page-content">
+          <div class="experience-grid">
+            <div class="timeline">
+              <article class="timeline-item reveal-item"><div class="timeline-year">01</div><div><h3 class="timeline-heading">MILCRYPT-AI — Système de communication sécurisé avec IA</h3><p class="timeline-place">Fév. 2026 – Juin 2026 · Ingénieure concepteur · Projet de fin d'études (PFE) · Sotetel</p><p class="timeline-copy">Conception d'un système de communication sécurisé associant IA, cryptographie post-quantique (Kyber-1024, Dilithium3) et authentification biométrique multifacteur. Validation par une campagne de tests d'intrusion Red Team : 12 vecteurs d'attaque, 910 tentatives, 100 % de blocage. Analyse du trafic réseau avec Wireshark, puis rédaction et présentation d'un rapport technique détaillé devant un jury. Soutenu avec mention Très Bien.</p><div class="tag-row"><span class="tag">IA</span><span class="tag">Kyber-1024</span><span class="tag">Dilithium3</span><span class="tag">Red Team</span><span class="tag">Wireshark</span></div></div></article>
+              <article class="timeline-item reveal-item"><div class="timeline-year">02</div><div><h3 class="timeline-heading">Smart IT Operations &amp; ITSM Platform</h3><p class="timeline-place">Juin 2025 – Août 2025 · Ingénieure Full-Stack · Stage d'été · BIZ Expérience</p><p class="timeline-copy">Plateforme ITSM/ITOM : incidents, demandes de service, SLA et éléments de configuration (CMDB). Supervision Linux, Windows et Kubernetes avec Prometheus, Grafana et Alertmanager, création automatique de tickets à partir des alertes. API REST et SOAP, conteneurisation Docker, déploiement Kubernetes ; scénarios de diagnostic et résolution d'incidents systèmes et réseaux.</p><div class="tag-row"><span class="tag">ITSM / ITOM</span><span class="tag">Docker</span><span class="tag">Kubernetes</span><span class="tag">Prometheus</span><span class="tag">Grafana</span></div></div></article>
+              <article class="timeline-item reveal-item"><div class="timeline-year">03</div><div><h3 class="timeline-heading">IA pour l'analyse du signal vocal (reconnaissance d'émotions)</h3><p class="timeline-place">Fév. 2025 – Mai 2025 · Ingénieure R&amp;D · Projet de fin d'année · Biware</p><p class="timeline-copy">Reconnaissance d'émotions pour l'interaction homme-véhicule. Environnement de traitement des données et entraînement d'un modèle Deep Learning (CNN, TensorFlow/Keras) : signal brut vers extraction de caractéristiques puis classification.</p><div class="tag-row"><span class="tag">Deep Learning</span><span class="tag">CNN</span><span class="tag">TensorFlow/Keras</span></div></div></article>
+            </div>
+            <div class="timeline">
+              <article class="timeline-item reveal-item"><div class="timeline-year">04</div><div><h3 class="timeline-heading">Diagnostic et sécurité de cartes électroniques</h3><p class="timeline-place">Oct. 2024 – Fév. 2025 · Ingénieure · Stage professionnel · MPSI-Tunisia</p><p class="timeline-copy">Diagnostic de pannes sur cartes électroniques pour réduire les temps d'arrêt ; rapports techniques détaillés pour la traçabilité.</p><div class="tag-row"><span class="tag">Électronique</span><span class="tag">Diagnostic</span><span class="tag">Sécurité</span></div></div></article>
+              <article class="timeline-item reveal-item"><div class="timeline-year">05</div><div><h3 class="timeline-heading">MES (Manufacturing Execution System)</h3><p class="timeline-place">Août 2024 – Sept. 2024 · Ingénieure MES · Stage d'été · OneTech Group</p><p class="timeline-copy">Suivi de production et reporting de traçabilité en environnement industriel.</p><div class="tag-row"><span class="tag">MES</span><span class="tag">Industrie</span><span class="tag">Traçabilité</span></div></div></article>
+              <article class="timeline-item reveal-item"><div class="timeline-year">06</div><div><h3 class="timeline-heading">Système d'éclairage IoT sécurisé</h3><p class="timeline-place">Janv. 2022 – Mai 2022 · Ingénieure · Projet de fin d'études de licence · Fixtronix (service de réparation industrielle)</p><p class="timeline-copy">Étude de faisabilité, cahier des charges et conception d'un système d'éclairage intelligent connecté avec ESP32, capteurs et plateforme IoT.</p><div class="tag-row"><span class="tag">ESP32</span><span class="tag">IoT</span><span class="tag">Capteurs</span></div></div></article>
+            </div>
+          </div>
+        </div>
+        <div class="page-footer"><span class="footer-index">Sirine Bensalah / Expérience</span><nav class="page-nav" aria-label="Page navigation"><button type="button" data-prev>Précédent</button><span class="footer-index page-counter">04 / 09</span><button type="button" data-next>Suivant</button></nav></div>
+      </div>
+    </section>
+
+    <section class="cv-page" id="page-skills" data-page="4" aria-labelledby="skills-title" aria-hidden="true">
+      <div class="page-shell">
+        <header class="page-header"><div><p class="section-number">04 — Compétences</p><h2 class="page-title" id="skills-title">Compétences</h2></div><span class="page-stamp">Boîte à outils technique</span></header>
+        <div class="page-content">
+          <div class="skills-grid">
+            <section class="skill-category reveal-item"><h3>IA / Data</h3><div class="skills-row"><span class="skill-token">Python</span><span class="skill-token">Pandas</span><span class="skill-token">scikit-learn</span><span class="skill-token">TensorFlow/Keras</span><span class="skill-token">NLP</span><span class="skill-token">Deep Learning (CNN)</span><span class="skill-token">Machine Learning</span><span class="skill-token">Extraction de caractéristiques</span><span class="skill-token">Classification</span><span class="skill-token">Détection d'anomalies</span><span class="skill-token">Systèmes de recommandation</span><span class="skill-token">Maintenance prédictive</span><span class="skill-token">Traitement du signal</span></div></section>
+            <section class="skill-category reveal-item"><h3>Web / Software</h3><div class="skills-row"><span class="skill-token">Java Spring Boot</span><span class="skill-token">Angular</span><span class="skill-token">React.js</span><span class="skill-token">React Native</span><span class="skill-token">Node.js/Express</span><span class="skill-token">PHP/Laravel</span><span class="skill-token">Python (FastAPI)</span><span class="skill-token">API REST et SOAP</span><span class="skill-token">Microservices</span><span class="skill-token">PyQt</span><span class="skill-token">C#/ASP.NET Core</span></div></section>
+            <section class="skill-category reveal-item"><h3>Bases de données</h3><div class="skills-row"><span class="skill-token">PostgreSQL</span><span class="skill-token">MySQL</span><span class="skill-token">SQLite</span><span class="skill-token">MongoDB</span><span class="skill-token">SQL Server</span></div></section>
+            <section class="skill-category reveal-item"><h3>Embarqué / IoT</h3><div class="skills-row"><span class="skill-token">STM32</span><span class="skill-token">ESP32</span><span class="skill-token">Raspberry Pi</span><span class="skill-token">Zephyr RTOS</span><span class="skill-token">FreeRTOS</span><span class="skill-token">Linux embarqué</span><span class="skill-token">MQTT</span><span class="skill-token">CAN</span><span class="skill-token">Modbus</span><span class="skill-token">RS485</span><span class="skill-token">Ethernet</span><span class="skill-token">FPGA/VHDL</span><span class="skill-token">ModelSim/Questa</span></div></section>
+            <section class="skill-category reveal-item"><h3>Réseaux / Sécurité</h3><div class="skills-row"><span class="skill-token">LAN/WLAN/VLAN</span><span class="skill-token">TCP/IP</span><span class="skill-token">IPv4</span><span class="skill-token">IPv6</span><span class="skill-token">DHCP/DNS</span><span class="skill-token">VPN</span><span class="skill-token">Cisco IOS</span><span class="skill-token">Wireshark</span><span class="skill-token">Cryptographie post-quantique (Kyber, Dilithium)</span><span class="skill-token">Authentification multifacteur</span><span class="skill-token">Tests d'intrusion (Red Team)</span></div></section>
+            <section class="skill-category reveal-item"><h3>DevOps &amp; supervision</h3><div class="skills-row"><span class="skill-token">Docker</span><span class="skill-token">Kubernetes</span><span class="skill-token">Git/GitHub</span><span class="skill-token">CI/CD (GitHub Actions)</span><span class="skill-token">Prometheus</span><span class="skill-token">Grafana</span><span class="skill-token">Alertmanager</span><span class="skill-token">ITSM/ITOM</span><span class="skill-token">SLA</span><span class="skill-token">CMDB</span><span class="skill-token">Tests unitaires et d'intégration</span></div></section>
+            <section class="skill-category reveal-item"><h3>Systèmes</h3><div class="skills-row"><span class="skill-token">Linux (Ubuntu, Kali)</span><span class="skill-token">Windows Server</span><span class="skill-token">Microsoft 365</span><span class="skill-token">Entra ID</span><span class="skill-token">Exchange Online</span><span class="skill-token">SharePoint</span><span class="skill-token">Teams</span><span class="skill-token">Intune</span></div></section>
+            <section class="skill-category reveal-item"><h3>Langages &amp; méthodes</h3><div class="skills-row"><span class="skill-token">Java</span><span class="skill-token">JavaScript</span><span class="skill-token">Python</span><span class="skill-token">PHP</span><span class="skill-token">C</span><span class="skill-token">C++</span><span class="skill-token">C#</span><span class="skill-token">VHDL</span><span class="skill-token">Agile / Scrum</span><span class="skill-token">Documentation technique</span></div></section>
+          </div>
+        </div>
+        <div class="page-footer"><span class="footer-index">Sirine Bensalah / Compétences</span><nav class="page-nav" aria-label="Page navigation"><button type="button" data-prev>Précédent</button><span class="footer-index page-counter">05 / 09</span><button type="button" data-next>Suivant</button></nav></div>
+      </div>
+    </section>
+
+    <section class="cv-page" id="page-certifications" data-page="5" aria-labelledby="certifications-title" aria-hidden="true">
+      <div class="page-shell">
+        <header class="page-header"><div><p class="section-number">05 — Certifications</p><h2 class="page-title" id="certifications-title">Certifications</h2></div><span class="page-stamp">Badges &amp; formation</span></header>
+        <div class="page-content">
+          <div class="credentials-bar reveal-item"><span class="verified-label">Badges vérifiés</span><a class="inline-link" href="https://credly.com/users/bensalah-sirine" target="_blank" rel="noopener noreferrer">Voir le profil Credly</a></div>
+          <div class="cert-grid">
+            <article class="cert-item reveal-item"><span class="cert-check">Credly</span><h3>Networking Basics</h3><p class="cert-issuer">Cisco Networking Academy</p><p class="cert-date">8 oct. 2026</p></article>
+            <article class="cert-item reveal-item"><span class="cert-check">Credly</span><h3>Networking Devices and Initial Configuration</h3><p class="cert-issuer">Cisco Networking Academy</p><p class="cert-date">8 oct. 2026</p></article>
+            <article class="cert-item reveal-item"><span class="cert-check">Credly</span><h3>Network Addressing and Basic Troubleshooting</h3><p class="cert-issuer">Cisco Networking Academy</p><p class="cert-date">8 oct. 2026</p></article>
+            <article class="cert-item reveal-item"><span class="cert-check">Credly</span><h3>Network Support and Security</h3><p class="cert-issuer">Cisco Networking Academy</p><p class="cert-date">8 oct. 2026</p></article>
+            <article class="cert-item reveal-item"><span class="cert-check">Credly</span><h3>Operating Systems Basics</h3><p class="cert-issuer">Cisco Networking Academy</p><p class="cert-date">8 oct. 2026</p></article>
+            <article class="cert-item reveal-item"><span class="cert-check">Credly</span><h3>Introduction to Internet of Things (IoT)</h3><p class="cert-issuer">Cisco Networking Academy</p><p class="cert-date">8 oct. 2026</p></article>
+            <article class="cert-item cert-item-muted reveal-item"><h3>Embedded C — Langage C pour les systèmes embarqués</h3><p class="cert-issuer">Centre de l'Information CSF</p></article>
+          </div>
+        </div>
+        <div class="page-footer"><span class="footer-index">Sirine Bensalah / Certifications</span><nav class="page-nav" aria-label="Page navigation"><button type="button" data-prev>Précédent</button><span class="footer-index page-counter">06 / 09</span><button type="button" data-next>Suivant</button></nav></div>
+      </div>
+    </section>
+
+    <section class="cv-page" id="page-projects" data-page="6" aria-labelledby="projects-title" aria-hidden="true">
+      <div class="page-shell">
+        <header class="page-header"><div><p class="section-number">06 — Projets sélectionnés</p><h2 class="page-title" id="projects-title">Projets</h2></div><span class="page-stamp">Systèmes conçus</span></header>
+        <div class="page-content">
+          <div class="project-grid">
+            <article class="project-item reveal-item"><span class="project-code">P / 01 · Agile/Scrum</span><h3>Recruitini</h3><p>Plateforme de recrutement intelligente (IA/NLP).</p><p class="project-stack"><strong>Stack :</strong> Java Spring Boot, Angular, PostgreSQL, Python/NLP/scikit-learn, Docker, Git.</p><p class="project-copy"><strong>Fonctions :</strong> gestion candidats et offres, dépôt et analyse automatique de CV, matching CV/offre, scoring, dashboard RH et statistiques.</p></article>
+            <article class="project-item reveal-item"><span class="project-code">P / 02 · Agile/Scrum</span><h3>ECommerce</h3><p>Application e-commerce intelligente Web + Mobile.</p><p class="project-stack"><strong>Stack :</strong> Node.js/Express, React, React Native, MySQL + MongoDB, Docker, Git.</p><p class="project-copy"><strong>Fonctions :</strong> catalogue, panier, commandes, paiement, stocks, recommandations personnalisées, analyse du comportement client, dashboard admin, notifications.</p></article>
+            <article class="project-item reveal-item"><span class="project-code">P / 03 · Agile/Scrum</span><h3>SmartStock</h3><p>Gestion et prédiction des stocks (Data + DevOps + backend).</p><p class="project-stack"><strong>Stack :</strong> Java Spring Boot, Angular, PostgreSQL + MongoDB, Python/Pandas/scikit-learn, Docker, Git ; REST API + microservices.</p><p class="project-copy"><strong>Fonctions :</strong> produits/fournisseurs, entrées/sorties, commandes, alertes de rupture, prévision de la demande, dashboards, détection d'anomalies.</p></article>
+            <article class="project-item reveal-item"><span class="project-code">P / 04 · IoT / embarqué</span><h3>Smart Industrial IoT Gateway</h3><p>Passerelle industrielle intelligente.</p><p class="project-stack"><strong>Stack :</strong> STM32/Zephyr RTOS, Raspberry Pi/Linux, MQTT, CAN.</p><p class="project-copy"><strong>Fonctions :</strong> acquisition capteurs, liaison CAN/MQTT vers passerelle Linux, supervision, détection d'anomalies, watchdog.</p></article>
+            <article class="project-item reveal-item"><span class="project-code">P / 05 · IoT / data</span><h3>Smart Energy Monitoring System</h3><p>Système de supervision intelligente de l'énergie.</p><p class="project-stack"><strong>Stack :</strong> STM32/Zephyr RTOS, MQTT, Linux embarqué.</p><p class="project-copy"><strong>Fonctions :</strong> tension/courant, calcul puissance/énergie, dashboard temps réel, détection d'anomalies de consommation.</p></article>
+            <article class="project-item reveal-item"><span class="project-code">P / 06 · Maintenance</span><h3>Maintenance prédictive de moteurs et servomoteurs</h3><p>Kit IoT et classification d'état.</p><p class="project-stack"><strong>Stack :</strong> ESP32/STM32, MQTT, FastAPI, PostgreSQL/SQLite, Grafana, scikit-learn.</p><p class="project-copy"><strong>Fonctions :</strong> température, vibrations, courant, tension, vitesse ; classification Normal / Attention / Défaut.</p></article>
+            <article class="project-item reveal-item"><span class="project-code">P / 07 · Industrie</span><h3>Plateforme de diagnostic, maintenance prédictive et traçabilité des équipements industriels</h3><p>Plateforme de suivi du cycle de réparation.</p><p class="project-stack"><strong>Stack :</strong> API, base de données, dashboard, QR code unique par équipement, MQTT/Modbus.</p><p class="project-copy"><strong>Fonctions :</strong> diagnostic, maintenance prédictive et traçabilité des équipements industriels.</p></article>
+            <article class="project-item reveal-item"><span class="project-code">P / 08 · Diagnostic</span><h3>Banc intelligent de diagnostic et de test (variateurs, servo-drives)</h3><p>Banc de mesure, détection et rapport.</p><p class="project-stack"><strong>Stack :</strong> STM32/ESP32, RS485/Modbus, Python/PyQt, SQLite.</p><p class="project-copy"><strong>Fonctions :</strong> mesures, détection d'anomalies, rapports PDF.</p></article>
+            <article class="project-item reveal-item"><span class="project-code">P / 09 · FPGA</span><h3>Microprocesseur RISC 8/16 bits sur FPGA</h3><p>Microprocesseur RISC avec jeu d'instructions personnalisé.</p><p class="project-stack"><strong>Stack :</strong> VHDL, ModelSim/Questa, FPGA Xilinx/AMD – Intel.</p><p class="project-copy"><strong>Fonctions :</strong> ALU, registres, unité de contrôle, ROM/RAM ; validation par testbenchs.</p></article>
+            <article class="project-item reveal-item"><span class="project-code">P / 10 · Logiciel industriel</span><h3>Mini ERP Industriel — Maintenance &amp; Équipements</h3><p>Gestion des équipements et de la maintenance.</p><p class="project-stack"><strong>Stack :</strong> C#, .NET, ASP.NET Core, SQL Server, React, REST API.</p><p class="project-copy"><strong>Fonctions :</strong> équipements, interventions, ordres de travail, pièces de rechange, indicateurs de maintenance.</p></article>
+          </div>
+        </div>
+        <div class="page-footer"><span class="footer-index">Sirine Bensalah / Projets</span><nav class="page-nav" aria-label="Page navigation"><button type="button" data-prev>Précédent</button><span class="footer-index page-counter">07 / 09</span><button type="button" data-next>Suivant</button></nav></div>
+      </div>
+    </section>
+
+    <section class="cv-page" id="page-featured" data-page="7" aria-labelledby="featured-title" aria-hidden="true">
+      <div class="page-shell">
+        <header class="page-header"><div><p class="section-number">07 — Projet phare</p><h2 class="page-title" id="featured-title">Projet phare</h2></div><span class="page-stamp">Focus technique</span></header>
+        <div class="page-content">
+          <div class="featured-intro reveal-item"><div><p class="eyebrow">MILCRYPT-AI</p><h3 class="featured-name">Système de communication<br>sécurisé avec IA</h3><p class="featured-subtitle">Projet de fin d'études · Sotetel · Très Bien</p></div><div class="featured-mark" aria-hidden="true"></div></div>
+          <div class="process-list">
+            <article class="process-step reveal-item"><span class="process-number">01</span><h3>Problème</h3><p>Système de communication sécurisé avec IA.</p></article>
+            <article class="process-step reveal-item"><span class="process-number">02</span><h3>Approche</h3><p>Conception associant IA, cryptographie post-quantique et authentification biométrique multifacteur.</p></article>
+            <article class="process-step reveal-item"><span class="process-number">03</span><h3>Technologies</h3><p>Kyber-1024, Dilithium3, authentification biométrique multifacteur, tests d'intrusion Red Team et Wireshark.</p></article>
+            <article class="process-step reveal-item"><span class="process-number">04</span><h3>Résultat</h3><p>12 vecteurs d'attaque, 910 tentatives, 100 % de blocage ; analyse du trafic réseau avec Wireshark et soutenance avec mention Très Bien.</p></article>
+          </div>
+          <div class="featured-tags reveal-item"><span class="featured-tag">AI</span><span class="featured-tag">Secure Communication</span><span class="featured-tag">Cryptography</span><span class="featured-tag">Biometric Authentication</span><span class="featured-tag">Red Team Testing</span><span class="featured-tag">Wireshark</span></div>
+        </div>
+        <div class="page-footer"><span class="footer-index">Sirine Bensalah / Projet phare</span><nav class="page-nav" aria-label="Page navigation"><button type="button" data-prev>Précédent</button><span class="footer-index page-counter">08 / 09</span><button type="button" data-next>Suivant</button></nav></div>
+      </div>
+    </section>
+
+    <section class="cv-page contact-page" id="page-contact" data-page="8" aria-labelledby="contact-title" aria-hidden="true">
+      <div class="page-shell">
+        <header class="page-header"><div><p class="section-number">08 — Contact</p><h2 class="page-title" id="contact-title">Contact</h2></div><span class="page-stamp">Coordonnées</span></header>
+        <div class="page-content contact-main">
+          <p class="eyebrow">The next system starts with a conversation.</p>
+          <h3 class="contact-title">LET'S<br><span>CONNECT.</span></h3>
+          <p class="contact-subtitle">Ingénieure diplômée — IA • IoT • Systèmes embarqués • Logiciel (Infotronique).</p>
+          <div class="contact-links reveal-item">
+            <div><span class="contact-link-label">Localisation</span><span class="contact-link-value">Bizerte / Tunis-Soukra, Tunisie</span></div>
+            <div><span class="contact-link-label">Téléphone</span><a class="contact-link-value" href="tel:+21653266267">+216 53 266 267</a></div>
+            <div><span class="contact-link-label">Email</span><a class="contact-link-value" href="mailto:sirine.bensalah@enicar.ucar.tn">sirine.bensalah@enicar.ucar.tn</a></div>
+            <div><span class="contact-link-label">LinkedIn</span><a class="contact-link-value" href="https://linkedin.com/in/sirine-bensalah" target="_blank" rel="noopener noreferrer">sirine-bensalah</a></div>
+          </div>
+          <div class="contact-actions reveal-item"><a class="action-button" href="mailto:sirine.bensalah@enicar.ucar.tn">Email me</a><a class="action-button" href="https://linkedin.com/in/sirine-bensalah" target="_blank" rel="noopener noreferrer">LinkedIn</a><button class="action-button" type="button" data-print>Download CV</button></div>
+        </div>
+        <div class="page-footer"><span class="footer-index">Sirine Bensalah / Contact</span><nav class="page-nav" aria-label="Page navigation"><button type="button" data-prev>Précédent</button><span class="footer-index page-counter">09 / 09</span><button type="button" data-next disabled>Suivant</button></nav></div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (() => {
+      const pages = [...document.querySelectorAll('.cv-page')];
+      const menu = document.getElementById('side-menu');
+      const overlay = document.getElementById('menu-overlay');
+      const menuToggle = document.getElementById('menu-toggle');
+      const menuClose = document.getElementById('menu-close');
+      const pageStatus = document.getElementById('page-status');
+      const progressValue = document.getElementById('progress-value');
+      const menuItems = [...document.querySelectorAll('[data-page-target]')];
+      let currentPage = 0;
+      let isTransitioning = false;
+      let touchStartX = 0;
+      let touchStartY = 0;
+
+      const pad = value => String(value).padStart(2, '0');
+
+      function updateInterface() {
+        pageStatus.textContent = `${pad(currentPage + 1)} / ${pad(pages.length)}`;
+        progressValue.style.width = `${((currentPage + 1) / pages.length) * 100}%`;
+        pages.forEach((page, index) => page.setAttribute('aria-hidden', index === currentPage ? 'false' : 'true'));
+        menuItems.forEach(item => {
+          const isActive = Number(item.dataset.pageTarget) === currentPage;
+          item.classList.toggle('is-active', isActive);
+          item.setAttribute('aria-current', isActive ? 'page' : 'false');
+        });
+        document.querySelectorAll('.page-counter').forEach(counter => {
+          counter.textContent = `${pad(currentPage + 1)} / ${pad(pages.length)}`;
+        });
+        document.querySelectorAll('[data-prev]').forEach(button => { button.disabled = currentPage === 0; });
+        document.querySelectorAll('[data-next]').forEach(button => { button.disabled = currentPage === pages.length - 1; });
+      }
+
+      function revealPage(page) {
+        page.querySelectorAll('.reveal-item').forEach((item, index) => {
+          item.classList.remove('is-revealed');
+          window.setTimeout(() => item.classList.add('is-revealed'), 90 + (index * 55));
+        });
+      }
+
+      function navigateToPage(target) {
+        const nextPage = Math.max(0, Math.min(pages.length - 1, Number(target)));
+        if (nextPage === currentPage || isTransitioning) return;
+        isTransitioning = true;
+        const current = pages[currentPage];
+        const next = pages[nextPage];
+        const movingForward = nextPage > currentPage;
+        next.classList.add('page-entering', movingForward ? 'from-right' : 'from-left');
+        current.classList.add('page-exiting-now', movingForward ? 'to-left' : 'to-right');
+        requestAnimationFrame(() => next.classList.add('page-entering-now'));
+        updateInterfaceForTransition(nextPage);
+        window.setTimeout(() => {
+          current.classList.remove('active', 'page-exiting-now', 'to-left', 'to-right');
+          next.classList.remove('page-entering', 'page-entering-now', 'from-right', 'from-left');
+          next.classList.add('active');
+          currentPage = nextPage;
+          updateInterface();
+          revealPage(next);
+          isTransitioning = false;
+        }, 540);
+      }
+
+      function updateInterfaceForTransition(nextPage) {
+        pageStatus.textContent = `${pad(nextPage + 1)} / ${pad(pages.length)}`;
+        progressValue.style.width = `${((nextPage + 1) / pages.length) * 100}%`;
+      }
+
+      function nextPage() { navigateToPage(currentPage + 1); }
+      function previousPage() { navigateToPage(currentPage - 1); }
+
+      function openMenu() {
+        menu.classList.add('is-open');
+        overlay.classList.add('is-open');
+        menu.setAttribute('aria-hidden', 'false');
+        overlay.setAttribute('aria-hidden', 'false');
+        menuToggle.setAttribute('aria-expanded', 'true');
+        menuToggle.setAttribute('aria-label', 'Close menu');
+        document.body.style.overflow = 'hidden';
+        menuClose.focus();
+      }
+
+      function closeMenu() {
+        menu.classList.remove('is-open');
+        overlay.classList.remove('is-open');
+        menu.setAttribute('aria-hidden', 'true');
+        overlay.setAttribute('aria-hidden', 'true');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        menuToggle.setAttribute('aria-label', 'Open menu');
+        document.body.style.overflow = '';
+      }
+
+      document.getElementById('open-cv').addEventListener('click', () => navigateToPage(1));
+      menuToggle.addEventListener('click', () => menu.classList.contains('is-open') ? closeMenu() : openMenu());
+      menuClose.addEventListener('click', closeMenu);
+      overlay.addEventListener('click', closeMenu);
+
+      menuItems.forEach(item => item.addEventListener('click', () => {
+        navigateToPage(item.dataset.pageTarget);
+        closeMenu();
+      }));
+
+      document.querySelectorAll('[data-next]').forEach(button => button.addEventListener('click', nextPage));
+      document.querySelectorAll('[data-prev]').forEach(button => button.addEventListener('click', previousPage));
+      document.querySelectorAll('[data-print]').forEach(button => button.addEventListener('click', () => window.print()));
+
+      document.addEventListener('keydown', event => {
+        if (event.key === 'Escape') { closeMenu(); return; }
+        if (event.key === 'ArrowRight') { event.preventDefault(); nextPage(); }
+        if (event.key === 'ArrowLeft') { event.preventDefault(); previousPage(); }
+      });
+
+      document.getElementById('cv-stage').addEventListener('touchstart', event => {
+        touchStartX = event.changedTouches[0].screenX;
+        touchStartY = event.changedTouches[0].screenY;
+      }, { passive: true });
+
+      document.getElementById('cv-stage').addEventListener('touchend', event => {
+        const endX = event.changedTouches[0].screenX;
+        const endY = event.changedTouches[0].screenY;
+        const deltaX = endX - touchStartX;
+        const deltaY = endY - touchStartY;
+        if (Math.abs(deltaX) > 55 && Math.abs(deltaX) > Math.abs(deltaY) * 1.25) {
+          deltaX < 0 ? nextPage() : previousPage();
+        }
+      }, { passive: true });
+
+      updateInterface();
+    })();
+  </script>
+</body>
+</html>
