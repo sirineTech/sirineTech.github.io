@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Portfolio — Sirine Bensalah</title>
+  <meta name="description" content="Portfolio of Sirine Bensalah — AI, IoT, embedded systems and software projects.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="portfolio.css">
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="portfolio.html">SIRINE BENSALAH <span>Portfolio</span></a>
+    <nav>
+      <a href="index.html">← Interactive CV</a>
+      <a href="CV_Sirine_Bensalah.pdf" download>Download CV ↓</a>
+      <a href="https://www.linkedin.com/in/sirine-bensalah" target="_blank" rel="noopener">LinkedIn ↗</a>
+      <a href="#" id="ghLink" target="_blank" rel="noopener" hidden>GitHub ↗</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p class="kicker">AI • IoT • EMBEDDED SYSTEMS • SOFTWARE</p>
+      <h1>Selected work.</h1>
+      <p class="sub">Ten projects across AI, embedded systems / IoT and full-stack software — from sensor acquisition and FPGA design to NLP platforms and DevOps pipelines.</p>
+      <div class="filters" id="filters" role="group" aria-label="Filter projects"></div>
+    </section>
+
+    <section class="grid" id="grid" aria-live="polite"></section>
+  </main>
+
+  <footer class="foot">
+    <p>Sirine Bensalah · Engineer, ENICarthage (Infotronic Systems Engineering, 2026) · <a href="mailto:sirine.bensalah@enicar.ucar.tn">sirine.bensalah@enicar.ucar.tn</a></p>
+  </footer>
+
+<script>
+/* Add real links here — empty values hide the buttons. Nothing is invented. */
+const GITHUB_PROFILE = '';
+
+const PROJECTS = [
+  { cat:'ai', name:'Recruitini', tag:'AI / NLP recruitment platform', ctx:'Academic project · Agile/Scrum',
+    feats:['Candidate and job-offer management','CV upload and automatic CV analysis','CV–job matching and candidate scoring','HR dashboard and statistics'],
+    tech:['Java Spring Boot','Angular','PostgreSQL','Python','NLP','scikit-learn','Docker','Git'], url:'', github:'' },
+  { cat:'sw', name:'ECommerce', tag:'Intelligent e-commerce — web + mobile', ctx:'Academic project · Agile/Scrum',
+    feats:['Catalog, cart, orders and payment','Stock management and notifications','Personalised recommendations and customer-behaviour analysis','Administrator dashboard'],
+    tech:['Node.js','Express','React','React Native','MySQL','MongoDB','Docker','Git'], url:'', github:'' },
+  { cat:'ai', name:'SmartStock', tag:'Stock management & prediction — Data + DevOps + backend', ctx:'Academic project · Agile/Scrum · REST API + microservices',
+    feats:['Product and supplier management, stock in/out, order tracking','Stock-out alerts','Demand forecasting and anomaly detection','Analytics dashboards'],
+    tech:['Java Spring Boot','Angular','PostgreSQL','MongoDB','Python','Pandas','scikit-learn','Docker','Git'], url:'', github:'' },
+  { cat:'emb', name:'Smart Industrial IoT Gateway', tag:'Industrial IoT gateway', ctx:'Embedded · IoT',
+    feats:['Sensor data acquisition on STM32','CAN / MQTT communication to a Linux gateway','Supervision dashboard and anomaly detection','Watchdog and error handling'],
+    tech:['STM32','Zephyr RTOS','Raspberry Pi','Linux','MQTT','CAN'], url:'', github:'' },
+  { cat:'emb', name:'Smart Energy Monitoring System', tag:'Real-time energy monitoring', ctx:'Embedded · IoT',
+    feats:['Voltage and current acquisition','Power and energy computation','MQTT transmission to a Linux gateway','Real-time dashboard and consumption anomaly detection'],
+    tech:['STM32','Zephyr RTOS','MQTT','Embedded Linux'], url:'', github:'' },
+  { cat:'ai', name:'Predictive Maintenance', tag:'Motors & servomotors — AI + IoT', ctx:'Embedded · IoT · Machine Learning',
+    feats:['IoT monitoring kit: temperature, vibration, current, voltage, speed','Data sent over Wi-Fi/Ethernet via MQTT to a server and dashboard','ML pipeline: normal and fault data, feature extraction','Normal / Warning / Fault classification with inspection alert'],
+    tech:['ESP32','STM32','MQTT','FastAPI','PostgreSQL','SQLite','Grafana','scikit-learn'], url:'', github:'' },
+  { cat:'emb', name:'Industrial Diagnostic Platform', tag:'Diagnostics, predictive maintenance & traceability', ctx:'Embedded · IoT · Backend',
+    feats:['Repair-cycle tracking: reception, diagnosis, quote, repair, test, delivery','Unique QR code and full history per equipment','Test bench → API → database → equipment file → automatic report','Integration of IoT sensors'],
+    tech:['API','Database','Dashboard','QR code','MQTT','Modbus'], url:'', github:'' },
+  { cat:'emb', name:'Smart Diagnostic & Test Bench', tag:'Drives and servo-drives', ctx:'Embedded · Desktop application',
+    feats:['Post-repair test bench measuring voltage, current, temperature and vibration','Generation of operating conditions and anomaly detection','PC application with automatic logging of measurements','PDF test-report generation'],
+    tech:['STM32','ESP32','RS485 / Modbus','Python','PyQt','SQLite'], url:'', github:'' },
+  { cat:'emb', name:'RISC Microprocessor on FPGA', tag:'8/16-bit processor design', ctx:'Digital design',
+    feats:['ALU, register file, program counter, instruction register, control unit','Program memory (ROM), data memory (RAM) and custom instruction set','Fetch–decode–execute–memory–write back cycle validated with testbenches','Extensions: 2–3 stage pipeline, interrupts, UART, GPIO, timer, debug interface'],
+    tech:['VHDL','ModelSim / Questa','FPGA Xilinx/AMD','Intel FPGA'], url:'', github:'' },
+  { cat:'sw', name:'Mini ERP Industriel', tag:'Maintenance & equipment management', ctx:'Software · Industrial',
+    feats:['Equipment and interventions management','Work orders and spare parts','Maintenance KPIs'],
+    tech:['C#','.NET','ASP.NET Core','SQL Server','React','REST API'], url:'', github:'' }
+];
+
+const FILTERS=[['all','All'],['ai','AI & Data'],['emb','Embedded & IoT'],['sw','Software']];
+const $=(s)=>document.querySelector(s);
+const pad=n=>String(n).padStart(2,'0');
+
+if (GITHUB_PROFILE){ const g=$('#ghLink'); g.href=GITHUB_PROFILE; g.hidden=false; }
+
+$('#filters').innerHTML = FILTERS.map(([k,l],i)=>`<button type="button" data-f="${k}" aria-pressed="${i===0}">${l}</button>`).join('');
+$('#grid').innerHTML = PROJECTS.map((p,i)=>`
+  <article class="card" data-cat="${p.cat}">
+    <div class="card__n">${pad(i+1)}</div>
+    <p class="card__tag">${p.tag}</p>
+    <h2>${p.name}</h2>
+    <p class="card__ctx">${p.ctx}</p>
+    <ul class="card__feats">${p.feats.map(f=>`<li>${f}</li>`).join('')}</ul>
+    <p class="card__t">TECHNOLOGIES</p>
+    <ul class="chips">${p.tech.map(t=>`<li>${t}</li>`).join('')}</ul>
+    ${(p.url||p.github)?`<div class="card__links">${p.url?`<a href="${p.url}" target="_blank" rel="noopener">VIEW PROJECT ↗</a>`:''}${p.github?`<a href="${p.github}" target="_blank" rel="noopener">GITHUB ↗</a>`:''}</div>`:''}
+  </article>`).join('');
+
+$('#filters').addEventListener('click',e=>{
+  const b=e.target.closest('button[data-f]'); if(!b) return;
+  document.querySelectorAll('#filters button').forEach(x=>x.setAttribute('aria-pressed',x===b));
+  document.querySelectorAll('.card').forEach(c=>{ c.hidden = !(b.dataset.f==='all'||c.dataset.cat===b.dataset.f); });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Sirine Bensalah — Interactive CV</title>
+  <meta name="description" content="Interactive CV of Sirine Bensalah — AI, IoT, Embedded Systems and Software engineer (ENICarthage, 2026).">
+  <meta name="theme-color" content="#0B1220">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-page="cover">
+
+  <!-- Progress bar -->
+  <div class="progress" role="presentation"><div class="progress__fill" id="progressFill"></div></div>
+
+  <!-- Hamburger -->
+  <button class="burger" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu">
+    <span></span><span></span><span></span>
+  </button>
+
+  <!-- Overlay + side menu -->
+  <div class="overlay" id="overlay"></div>
+  <nav class="menu" id="menu" aria-label="CV pages" aria-hidden="true" inert>
+    <div class="menu__head">
+      <strong>SIRINE BENSALAH</strong>
+      <span>Interactive CV</span>
+    </div>
+    <ol class="menu__list" id="menuList"></ol>
+    <div class="menu__foot">
+      <a href="CV_Sirine_Bensalah.pdf" download data-link="cv">Download CV <span aria-hidden="true">↓</span></a>
+      <a href="#" target="_blank" rel="noopener" data-link="linkedin">LinkedIn <span aria-hidden="true">↗</span></a>
+      <a href="#" target="_blank" rel="noopener" data-link="github" hidden>GitHub <span aria-hidden="true">↗</span></a>
+      <a href="#" data-link="email">Email <span aria-hidden="true">↗</span></a>
+    </div>
+  </nav>
+
+  <main class="stage">
+    <div class="sheet" id="sheet">
+
+      <div class="pages">
+
+        <!-- 01 COVER -->
+        <section class="page page-cover is-active" id="page-cover" data-title="Cover" aria-label="Cover">
+          <svg class="cover__art" viewBox="0 0 600 800" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+            <defs>
+              <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#3B82F6" stop-opacity=".55"/>
+                <stop offset="1" stop-color="#22D3EE" stop-opacity=".05"/>
+              </linearGradient>
+              <pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse">
+                <circle cx="2" cy="2" r="1" fill="#94A3B8" fill-opacity=".25"/>
+              </pattern>
+            </defs>
+            <rect width="600" height="800" fill="url(#dots)"/>
+            <g fill="none" stroke="url(#g1)" stroke-width="1.4">
+              <circle cx="470" cy="210" r="90"/><circle cx="470" cy="210" r="150"/><circle cx="470" cy="210" r="220"/>
+              <path d="M40 520 H170 L210 560 H360 L400 520 H560"/>
+              <path d="M40 580 H130 L170 620 H300 L340 580 H560"/>
+              <path d="M40 640 H250 L290 680 H420 L460 640 H560"/>
+            </g>
+            <g fill="#60A5FA">
+              <circle cx="170" cy="520" r="4"/><circle cx="360" cy="560" r="4"/><circle cx="400" cy="520" r="4"/>
+              <circle cx="130" cy="580" r="4"/><circle cx="340" cy="580" r="4"/><circle cx="290" cy="680" r="4"/>
+              <circle cx="470" cy="210" r="6"/>
+            </g>
+          </svg>
+
+          <div class="cover__top"><span>INTERACTIVE CV</span><span>2026</span></div>
+
+          <div class="cover__main">
+            <p class="cover__kicker">AI • IoT • EMBEDDED SYSTEMS • SOFTWARE</p>
+            <h1 class="cover__name">SIRINE<br>BENSALAH</h1>
+            <p class="cover__role">Engineering Graduate</p>
+            <p class="cover__tagline">“Building intelligent systems at the intersection of AI, embedded technologies and software.”</p>
+            <div class="cover__actions">
+              <button class="btn btn--primary" type="button" data-goto="1">OPEN CV <span aria-hidden="true">→</span></button>
+              <a class="btn btn--ghost" href="CV_Sirine_Bensalah.pdf" download data-link="cv">DOWNLOAD PDF</a>
+              <a class="btn btn--ghost" href="#" target="_blank" rel="noopener" data-link="linkedin">LINKEDIN ↗</a>
+              <a class="btn btn--ghost" href="#" target="_blank" rel="noopener" data-link="github" hidden>GITHUB ↗</a>
+            </div>
+          </div>
+
+          <div class="cover__foot">ENICarthage · Infotronic Systems Engineering · Research Master’s EEA (ARTI)</div>
+        </section>
+
+        <!-- 02 PROFILE -->
+        <section class="page" id="page-profile" data-title="Profile" aria-label="Profile">
+          <div class="page__inner">
+            <header class="page__head reveal"><h2><em>01 —</em> PROFILE</h2></header>
+
+            <p class="lead reveal">
+              Engineer graduated from <strong>ENICarthage</strong> (Infotronic Systems Engineering, dual degree with the Research Master’s in EEA — ARTI track, 2026), working at the intersection of <strong>AI</strong>, <strong>embedded systems / IoT</strong> and <strong>software</strong>.
+            </p>
+            <p class="reveal">
+              End-to-end design experience: sensor acquisition (STM32, ESP32, Zephyr RTOS), industrial protocols (MQTT, CAN, Modbus), embedded Linux gateways, Machine / Deep Learning models, full-stack applications and DevOps pipelines. Solid grounding in networking (LAN/WLAN/VLAN, Wireshark) and cybersecurity (post-quantum cryptography, multi-factor authentication, Red Team testing). Agile / Scrum, rigorous technical writing.
+            </p>
+
+            <h3 class="label reveal">Core focus</h3>
+            <ul class="focus reveal">
+              <li><b>AI</b><small>ML · DL · NLP</small></li>
+              <li><b>IoT</b><small>MQTT · CAN · Modbus</small></li>
+              <li><b>EMBEDDED</b><small>STM32 · ESP32 · RTOS</small></li>
+              <li><b>SOFTWARE</b><small>Full-stack · DevOps</small></li>
+              <li><b>NETWORKING</b><small>LAN · WLAN · VLAN</small></li>
+              <li><b>SECURITY</b><small>PQC · MFA · Red Team</small></li>
+            </ul>
+
+            <div class="stats reveal">
+              <div><b data-count="experience">6</b><span>Experiences</span></div>
+              <div><b data-count="projects">10</b><span>Projects</span></div>
+              <div><b data-count="certs">7</b><span>Certifications</span></div>
+            </div>
+
+            <div class="split">
+              <div class="reveal">
+                <h3 class="label">Languages</h3>
+                <ul class="plain">
+                  <li><b>French</b> — fluent</li>
+                  <li><b>English</b> — very good, professional &amp; technical writing</li>
+                  <li><b>Arabic</b> — native</li>
+                </ul>
+              </div>
+              <div class="reveal">
+                <h3 class="label">Interests</h3>
+                <ul class="plain">
+                  <li>Teaching computer science (high school — Maths/Computer Science &amp; Technical Sciences tracks)</li>
+                  <li>Sport</li>
+                  <li>Horseback riding</li>
+                </ul>
+              </div>
+            </div>
+            <p class="meta reveal">📍 Bizerte / Tunis-Soukra, Tunisia</p>
+          </div>
+        </section>
+
+        <!-- 03 EDUCATION -->
+        <section class="page" id="page-education" data-title="Education" aria-label="Education">
+          <div class="page__inner">
+            <header class="page__head reveal"><h2><em>02 —</em> EDUCATION</h2></header>
+            <ol class="timeline">
+              <li class="tl reveal">
+                <span class="tl__year">2026</span>
+                <div class="tl__body">
+                  <h3>Diplôme d’ingénieur en Génie des Systèmes Infotroniques</h3>
+                  <p class="tl__org">ENICarthage — École Nationale d’Ingénieurs de Carthage</p>
+                  <p class="tl__note">Engineering degree in Infotronic Systems Engineering · graduated 07/2026</p>
+                </div>
+              </li>
+              <li class="tl reveal">
+                <span class="tl__year">2026</span>
+                <div class="tl__body">
+                  <h3>Master de Recherche EEA — parcours ARTI</h3>
+                  <p class="tl__org">ENICarthage</p>
+                  <p class="tl__note">Automatique, Robotique &amp; Traitement de l’Information · dual degree with the engineering cycle · signal processing, control, robotics, AI</p>
+                </div>
+              </li>
+              <li class="tl reveal">
+                <span class="tl__year">2022</span>
+                <div class="tl__body">
+                  <h3>Licence Nationale en Électronique, Électrotechnique &amp; Automatique — Systèmes Embarqués</h3>
+                  <p class="tl__org">ISSAT Mateur</p>
+                  <p class="tl__note">Analog/digital electronics, power electronics, control, microcontrollers, networks &amp; communication</p>
+                </div>
+              </li>
+              <li class="tl reveal">
+                <span class="tl__year">2019</span>
+                <div class="tl__body">
+                  <h3>Baccalauréat Technique</h3>
+                  <p class="tl__org">Lycée Ibnou Sina, Menzel Bourguiba</p>
+                </div>
+              </li>
+            </ol>
+          </div>
+        </section>
+
+        <!-- 04 EXPERIENCE -->
+        <section class="page" id="page-experience" data-title="Experience" aria-label="Experience">
+          <div class="page__inner">
+            <header class="page__head reveal"><h2><em>03 —</em> EXPERIENCE</h2></header>
+            <ol class="timeline" id="experienceList"></ol>
+          </div>
+        </section>
+
+        <!-- 05 SKILLS -->
+        <section class="page" id="page-skills" data-title="Skills" aria-label="Skills">
+          <div class="page__inner">
+            <header class="page__head reveal"><h2><em>04 —</em> SKILLS</h2></header>
+            <div class="skills" id="skillsList"></div>
+          </div>
+        </section>
+
+        <!-- 06 CERTIFICATIONS -->
+        <section class="page" id="page-certifications" data-title="Certifications" aria-label="Certifications">
+          <div class="page__inner">
+            <header class="page__head reveal"><h2><em>05 —</em> CERTIFICATIONS</h2></header>
+            <div class="verified reveal">
+              <span class="verified__tag">✓ VERIFIED CREDENTIALS</span>
+              <a class="link" href="#" target="_blank" rel="noopener" data-link="credly">View Credly Profile ↗</a>
+            </div>
+            <div class="certs" id="certList"></div>
+          </div>
+        </section>
+
+        <!-- 07 PROJECTS -->
+        <section class="page" id="page-projects" data-title="Projects" aria-label="Projects">
+          <div class="page__inner">
+            <header class="page__head reveal"><h2><em>06 —</em> SELECTED PROJECTS</h2></header>
+            <div class="filters reveal" id="projectFilters" role="group" aria-label="Filter projects"></div>
+            <div class="projects" id="projectList"></div>
+            <p class="reveal" style="margin-top:1.4em"><a class="link" href="portfolio.html">Open the full portfolio ↗</a></p>
+          </div>
+        </section>
+
+        <!-- 08 FEATURED -->
+        <section class="page" id="page-featured" data-title="Featured Project" aria-label="Featured project">
+          <div class="page__inner">
+            <header class="page__head reveal"><h2><em>07 —</em> FEATURED PROJECT</h2></header>
+            <div class="feat__title reveal">
+              <h3>MILCRYPT-AI</h3>
+              <p>Intelligent Secure Communication System</p>
+              <small>Final-year engineering project (PFE) · Sotetel · Feb – Jun 2026 · defended with highest honors (Très Bien)</small>
+            </div>
+
+            <ul class="chips chips--lg reveal">
+              <li>AI</li><li>Secure Communication</li><li>Cryptography</li>
+              <li>Biometric Authentication</li><li>Red Team Testing</li><li>Wireshark</li>
+            </ul>
+
+            <ol class="flow">
+              <li class="flow__step reveal">
+                <span class="flow__k">PROBLEM</span>
+                <p>Protect communications with post-quantum-grade cryptography and reliable user authentication — and prove the system holds up under real attack.</p>
+              </li>
+              <li class="flow__step reveal">
+                <span class="flow__k">APPROACH</span>
+                <p>Combine AI, post-quantum cryptography and multi-factor biometric authentication into one secure communication system, then validate it with a Red Team campaign.</p>
+              </li>
+              <li class="flow__step reveal">
+                <span class="flow__k">TECHNOLOGIES</span>
+                <ul class="chips">
+                  <li>Kyber-1024</li><li>Dilithium3</li><li>Multi-factor biometrics</li><li>AI</li><li>Penetration testing</li><li>Wireshark</li>
+                </ul>
+              </li>
+              <li class="flow__step flow__step--result reveal">
+                <span class="flow__k">RESULT</span>
+                <div class="result">
+                  <div><b>12</b><span>attack vectors</span></div>
+                  <div><b>910</b><span>attempts</span></div>
+                  <div><b>100%</b><span>blocked</span></div>
+                </div>
+                <p>Network traffic analysed with Wireshark; detailed technical report written and presented to a jury.</p>
+              </li>
+            </ol>
+          </div>
+        </section>
+
+        <!-- 09 CONTACT -->
+        <section class="page" id="page-contact" data-title="Contact" aria-label="Contact">
+          <div class="page__inner page__inner--center">
+            <header class="page__head reveal"><h2><em>08 —</em> CONTACT</h2></header>
+            <p class="big reveal">LET’S<br>CONNECT.</p>
+
+            <ul class="contact reveal">
+              <li><span>Email</span><a href="#" data-link="email" data-text="email"></a></li>
+              <li><span>LinkedIn</span><a href="#" target="_blank" rel="noopener" data-link="linkedin">linkedin.com/in/sirine-bensalah</a></li>
+              <li data-needs="github" hidden><span>GitHub</span><a href="#" target="_blank" rel="noopener" data-link="github" data-text="github"></a></li>
+              <li><span>Credly</span><a href="#" target="_blank" rel="noopener" data-link="credly">credly.com/users/bensalah-sirine</a></li>
+              <li data-needs="phone" hidden><span>Phone</span><a href="#" data-link="phone" data-text="phone"></a></li>
+              <li><span>Location</span><b>Bizerte / Tunis-Soukra, Tunisia</b></li>
+            </ul>
+
+            <div class="cover__actions reveal">
+              <a class="btn btn--primary" href="#" data-link="email">EMAIL ME</a>
+              <a class="btn btn--ghost-dark" href="#" target="_blank" rel="noopener" data-link="linkedin">LINKEDIN ↗</a>
+              <a class="btn btn--ghost-dark" href="#" target="_blank" rel="noopener" data-link="github" hidden>GITHUB ↗</a>
+              <a class="btn btn--ghost-dark" href="CV_Sirine_Bensalah.pdf" download data-link="cv">DOWNLOAD CV</a>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Pager (hidden on cover) -->
+      <footer class="pager" id="pager">
+        <button class="pager__btn" id="prevBtn" type="button" aria-label="Previous page">← PREVIOUS</button>
+        <span class="pager__count" id="counter" aria-live="off">PAGE 02 / 09</span>
+        <button class="pager__btn" id="nextBtn" type="button" aria-label="Next page">NEXT →</button>
+      </footer>
+    </div>
+  </main>
+
+  <!-- Credential modal (opens only when a real certificate image is configured) -->
+  <dialog class="modal" id="certModal" aria-label="Certificate">
+    <form method="dialog"><button class="modal__close" aria-label="Close">✕</button></form>
+    <img id="certModalImg" alt="">
+  </dialog>
+
+  <p class="sr-only" id="announcer" aria-live="polite"></p>
+  <noscript><p style="position:fixed;inset:auto 16px 16px;background:#fff;padding:12px;border-radius:8px">Please enable JavaScript to browse this interactive CV, or <a href="CV_Sirine_Bensalah.pdf">download the PDF</a>.</p></noscript>
+
+  <script src="script.js"></script>
+</body>
+</html>
