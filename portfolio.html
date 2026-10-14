@@ -1,6 +1,10 @@
-<!--
-  À COLLER DANS portfolio.html
-  1) Le <style> : dans le <head> (ou à la fin de votre CSS existant)
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Portfolio — Sirine Bensalah, Ingénieure Infotronique</title>
+<meta name="description" content="Portfolio de Sirine Bensalah, ingénieure infotronique : infrastructure IT et cybersécurité, développement full stack, IoT et systèmes embarqués.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style> : dans le <head> (ou à la fin de votre CSS existant)
   2) Le bloc "TITRE" : remplace/complète le sous-titre sous "Selected work."
   3) Les sections "EXPÉRIENCE" et "PROJETS" : dans <main>, après vos projets actuels
   4) Les images sont intégrées directement dans le code : aucun fichier image à ajouter
@@ -43,14 +47,89 @@
   .add-ps.is-problem { border-left-color: #e76f51; }
   .add-shots.is-phone { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
   .add-shots.is-pc { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
-</style>
+</style><style>
+:root{--bg:#f7f9fc;--fg:#0f1c2e;--muted:#5a6b82;--card:#ffffff;--border:#dfe6ef;--accent:#1d5fd1;--accent2:#0e9f8e;--soft:#eaf1fc}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:Manrope,system-ui,sans-serif;line-height:1.6}
+a{color:inherit}
+.top{position:sticky;top:0;z-index:10;display:flex;flex-wrap:wrap;gap:.6rem 1.5rem;align-items:center;justify-content:space-between;padding:.75rem 1.5rem;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
+.brand{font-weight:800;letter-spacing:.03em;text-decoration:none;color:var(--fg)}
+.tabs{display:flex;flex-wrap:wrap;gap:.25rem}
+.tabs button{font:inherit;font-size:.92rem;font-weight:600;cursor:pointer;color:var(--muted);background:none;border:0;border-radius:8px;padding:.5rem .9rem}
+.tabs button:hover{background:var(--soft);color:var(--accent)}
+.tabs button[aria-selected=true]{background:var(--accent);color:#fff}
+.links{display:flex;gap:1rem;font-size:.88rem}.links a{text-decoration:none;color:var(--muted);font-weight:600}.links a:hover{color:var(--accent)}
+.wrap{max-width:1140px;margin:0 auto;padding:0 1.25rem}
+.hero{background:linear-gradient(135deg,#eaf1fc 0%,#f7f9fc 55%,#e6f6f3 100%);border-bottom:1px solid var(--border)}
+.hero .wrap{padding-top:4rem;padding-bottom:3.5rem}
+.kicker{display:inline-block;background:#fff;border:1px solid var(--border);color:var(--accent);font-weight:700;font-size:.78rem;letter-spacing:.08em;padding:.3rem .8rem;border-radius:999px;margin:0 0 1rem}
+.hero h1{font-size:clamp(2.3rem,6vw,4rem);line-height:1.05;margin:0 0 .4rem;letter-spacing:-.02em}
+.hero h2{font-size:clamp(1.2rem,2.6vw,1.7rem);font-weight:600;color:var(--accent);margin:0 0 1rem}
+.hero p.lead{max-width:62ch;color:var(--muted);font-size:1.05rem;margin:0 0 1.6rem}
+.cta{display:flex;flex-wrap:wrap;gap:.7rem}
+.btn{display:inline-block;text-decoration:none;font-weight:700;font-size:.92rem;padding:.7rem 1.2rem;border-radius:10px;border:1px solid var(--accent);color:var(--accent);background:#fff}
+.btn.primary{background:var(--accent);color:#fff}.btn:hover{box-shadow:0 4px 14px rgba(29,95,209,.25)}
+.stats{display:flex;flex-wrap:wrap;gap:2.5rem;margin-top:2.5rem}.stats b{display:block;font-size:2rem;color:var(--fg);line-height:1}.stats span{color:var(--muted);font-size:.85rem}
+.sec-title{margin:3rem 0 .3rem;font-size:1.7rem}.sec-sub{color:var(--muted);margin:0 0 1.2rem}
+.filters{display:flex;flex-wrap:wrap;gap:.5rem;margin:0 0 1.4rem}
+.filters button{font:inherit;font-weight:600;font-size:.88rem;cursor:pointer;background:#fff;color:var(--fg);border:1px solid var(--border);border-radius:999px;padding:.45rem 1rem}
+.filters button[aria-pressed=true]{background:var(--fg);color:#fff;border-color:var(--fg)}
+.hgrid,.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.25rem}
+.hcard,.card,.add-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.3rem 1.4rem;box-shadow:0 1px 2px rgba(15,28,46,.04)}
+.hcard{display:flex;flex-direction:column;text-decoration:none;transition:.18s}
+.hcard:hover{transform:translateY(-3px);box-shadow:0 10px 26px rgba(15,28,46,.1);border-color:var(--accent)}
+.hcard[hidden]{display:none}
+.hcard h3{margin:.7rem 0 .2rem;font-size:1.08rem}.hcard p{margin:.2rem 0;font-size:.92rem;color:var(--muted)}.hcard .hm{font-size:.8rem;font-weight:600;color:var(--accent)}
+.hcard .add-tags{margin-top:.7rem}.more{margin-top:auto;padding-top:.9rem;font-size:.85rem;font-weight:700;color:var(--accent)}
+.pill{align-self:flex-start;font-size:.7rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:.2rem .65rem;border-radius:999px}
+.pill.sec{background:#fde8e4;color:#b13a1f}.pill.fs{background:var(--soft);color:var(--accent)}.pill.iot{background:#dff5f1;color:#0a7a6d}
+.page-hero{padding:3rem 0 1rem}.page-hero h1{font-size:clamp(1.8rem,4vw,2.6rem);margin:0 0 .4rem;letter-spacing:-.01em}.page-hero p{color:var(--muted);max-width:70ch;margin:.2rem 0}
+.page-hero .tl{color:var(--accent);font-weight:700}
+.card__tag{color:var(--accent);font-size:.75rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin:0 0 .3rem}
+.card h3,.add-card h3{margin:0 0 .25rem;font-size:1.15rem}.card__ctx{color:var(--muted);font-size:.9rem;margin:0 0 .6rem}
+.card__feats{padding-left:1.1rem;margin:.5rem 0}.card__feats li{margin-bottom:.35rem}
+.card__t,.add-label{font-size:.72rem;letter-spacing:.1em;color:var(--muted);margin:1rem 0 .4rem;font-weight:800;text-transform:uppercase}
+.chips{list-style:none;display:flex;flex-wrap:wrap;gap:.4rem;padding:0;margin:0}.chips li,.add-tags span{font-size:.78rem;padding:.2rem .6rem;border-radius:6px;background:var(--soft);color:#1d3f7a;font-weight:600}
+.page .grid{padding:0;margin:1rem 0 2rem}
+.add-section{margin:1.5rem 0 3rem;max-width:none;padding:0}
+.add-section h2{font-size:1.5rem}.add-badge{border-color:var(--accent2);color:var(--accent2)}
+.add-grid{grid-template-columns:repeat(auto-fit,minmax(360px,1fr))}
+.page[hidden]{display:none}
+.foot{border-top:1px solid var(--border);background:#fff;color:var(--muted);font-size:.9rem;padding:1.6rem 0;margin-top:3rem}
+@media(max-width:600px){.hgrid,.grid,.add-grid{grid-template-columns:1fr}.top{padding:.6rem 1rem}}
 
+.hcard{cursor:pointer}.hcard .more{background:none;border:0;font:inherit;font-weight:700;font-size:.88rem;color:var(--accent);text-align:left;padding:.9rem 0 0;cursor:pointer;margin-top:auto}
+.modal{position:fixed;inset:0;z-index:50;background:rgba(15,28,46,.55);display:flex;align-items:flex-start;justify-content:center;padding:2rem 1rem;overflow-y:auto}
+.modal[hidden]{display:none}
+.modal__box{position:relative;background:var(--card);border-radius:16px;max-width:980px;width:100%;padding:1.6rem 1.6rem 1.8rem;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.modal__box>article{border:0;box-shadow:none;padding:0;background:none}
+.modal__x{position:sticky;top:0;float:right;margin:-.4rem -.4rem 0 .5rem;z-index:2;width:38px;height:38px;border-radius:50%;border:1px solid var(--border);background:#fff;font-size:1.3rem;cursor:pointer;color:var(--fg)}
+.modal__x:hover{background:var(--soft);color:var(--accent)}
+body.noscroll{overflow:hidden}
+.btn{font:inherit;cursor:pointer}
+.contact h3{margin:0 0 .3rem;font-size:1.4rem}.contact p{color:var(--muted);margin:.2rem 0 1rem}
+.contact .mail{user-select:all;display:block;font-weight:800;font-size:1.15rem;color:var(--accent);margin:.5rem 0 1.2rem;word-break:break-all}
+.contact .opts{display:flex;flex-wrap:wrap;gap:.6rem}.contact .opts .btn{text-decoration:none}
+.contact .ok{color:var(--accent2);font-weight:700;margin-left:.4rem}
+</style></head>
+<body>
+<header class="top"><a class="brand" href="#accueil">SIRINE BENSALAH</a>
+<div class="tabs" role="tablist" aria-label="Pages">
+<button role="tab" data-p="accueil">Accueil</button><button role="tab" data-p="securite">Infra &amp; Cybersécurité</button><button role="tab" data-p="fullstack">Full Stack</button><button role="tab" data-p="iot">IoT &amp; Embarqué</button></div>
+<div class="links"><a href="CV_Sirine_Bensalah.pdf" download>CV ↓</a><a href="https://www.linkedin.com/in/sirine-bensalah" target="_blank" rel="noopener">LinkedIn ↗</a></div></header>
+<main>
+<div class="page" id="accueil">
+<section class="hero"><div class="wrap"><p class="kicker">PORTFOLIO</p><h1>Sirine Bensalah</h1><h2>Ingénieure Infotronique</h2>
+<p class="lead">Diplômée de l’ENICarthage (Génie des systèmes infotroniques, 2026). Je conçois des systèmes qui relient le matériel, le logiciel et la sécurité : de la carte embarquée et du FPGA jusqu’au cloud, aux applications web et à la cybersécurité.</p>
+<div class="cta"><a class="btn primary" href="#projets" data-go="projets">Voir les projets</a><button type="button" class="btn" id="contactBtn">Me contacter</button><a class="btn" href="CV_Sirine_Bensalah.pdf" download>Télécharger le CV</a></div>
+</div></section>
+<div class="wrap" id="projets"><h2 class="sec-title">Tous les projets</h2><p class="sec-sub">Cliquez sur un projet pour ouvrir sa page détaillée.</p>
+<div class="filters" id="filters" role="group" aria-label="Filtrer"><button data-f="all" aria-pressed="true">Tous</button><button data-f="sec" aria-pressed="false">Infra &amp; Cybersécurité</button><button data-f="fs" aria-pressed="false">Full Stack</button><button data-f="iot" aria-pressed="false">IoT &amp; Embarqué</button></div>
+<div class="hgrid"><article class="hcard" data-cat="sec"><span class="pill sec">Expérience · PFE</span><h3>Système de communication militaire sécurisé (MILCRYPT-AI)</h3><p class="hm">Sotetel · Fév.–Juin 2026</p><p>Authentification biométrique 2FA, cryptographie post-quantique (Kyber / Dilithium), Zero Trust et campagne Red Team : 910 attaques bloquées ou détectées.</p><div class="add-tags"><span>Post-quantum</span><span>Zero Trust</span><span>Red Team</span></div><button type="button" class="more">Voir le détail →</button></article><article class="hcard" data-cat="sec"><span class="pill sec">Infra & Cybersécurité</span><h3>Sécurisation des identités et des accès</h3><p class="hm">Entra ID / M365</p><p>Gestion des identités d’un tenant Microsoft 365 de 30 utilisateurs d’une entreprise fictive : moindre privilège (RBAC), MFA, accès conditionnel, PIM, revues d’accès et synchronisation…</p><div class="add-tags"><span>Entra ID</span><span>Microsoft 365</span><span>Conditional Access</span></div><button type="button" class="more">Voir le détail →</button></article><article class="hcard" data-cat="sec"><span class="pill sec">Infra & Cybersécurité</span><h3>Infrastructure Azure sécurisée en IaC</h3><p class="hm">Azure · Terraform / Bicep</p><p>Déploiement reproductible d’un environnement Azure sécurisé : réseau virtuel segmenté, VM Windows et Linux, NSG, administration via Azure Bastion, secrets dans Key Vault, conformité…</p><div class="add-tags"><span>Azure</span><span>Terraform</span><span>Bicep</span></div><button type="button" class="more">Voir le détail →</button></article><article class="hcard" data-cat="sec"><span class="pill sec">Infra & Cybersécurité</span><h3>Réseau d’entreprise segmenté avec firewall</h3><p class="hm">pfSense / OPNsense · VLAN · VPN</p><p>Réseau virtualisé segmenté en VLAN (utilisateurs, serveurs, invités, DMZ) protégé par un firewall pfSense ou OPNsense : routage inter-VLAN, NAT, règles de filtrage, serveur en DMZ et…</p><div class="add-tags"><span>VLAN</span><span>Inter-VLAN</span><span>DHCP / DNS</span></div><button type="button" class="more">Voir le détail →</button></article><article class="hcard" data-cat="sec"><span class="pill sec">Infra & Cybersécurité</span><h3>Supervision et détection d’incidents</h3><p class="hm">Monitoring + SIEM</p><p>Supervision de serveurs Windows et Linux avec Zabbix ou Prometheus / Grafana, puis déploiement du SIEM Wazuh avec règles de détection (brute force, création de compte administrateur,…</p><div class="add-tags"><span>Zabbix</span><span>Prometheus</span><span>Grafana</span></div><button type="button" class="more">Voir le détail →</button></article><article class="hcard" data-cat="sec"><span class="pill sec">Infra & Cybersécurité</span><h3>Sauvegarde, restauration et PRA</h3><p class="hm">Veeam · Azure Backup</p><p>Définition des systèmes critiques et des objectifs RTO / RPO, politique de sauvegarde selon la règle 3-2-1 avec Veeam Community Edition (Azure Backup en option), simulation de…</p><div class="add-tags"><span>Veeam</span><span>Azure Backup</span><span>Site Recovery</span></div><button type="button" class="more">Voir le détail →</button></article><article class="hcard" data-cat="sec"><span class="pill sec">Infra & Cybersécurité</span><h3>Migration et sécurisation du SI d’une PME</h3><p class="hm">Infrastructure hybride</p><p>Modernisation du système d’information d’une PME fictive de 50 utilisateurs, de l’audit et du cahier des charges à la recette : Active Directory local, réseau segmenté et firewall, VPN…</p><div class="add-tags"><span>Windows Server</span><span>AD DS / GPO</span><span>pfSense</span></div><button type="button" class="more">Voir le détail →</button></article><article class="hcard" data-cat="sec"><span class="pill sec">Infra & Cybersécurité</span><h3>Mini-SOC et plateforme Zero Trust</h3><p class="hm">SOC · Zero Trust</p><p>Plateforme de sécurité de lab combinant réseau segmenté, identités Zero Trust (Entra ID, MFA, accès conditionnel, PIM), landing zone Azure, SIEM et supervision. Scénarios d’attaque…</p><div class="add-tags"><span>Zero Trust</span><span>Entra ID</span><span>Azure</span></div><button type="button" class="more">Voir le détail →</button></article><article class="hcard" data-cat="fs"><span class="pill fs">Full Stack</span><h3>Recruitini</h3><p class="hm">Plateforme de recrutement IA / NLP</p><p>Gestion des candidats et des offres d’emploi. Dépôt de CV et analyse automatique des CV</p><div class="add-tags"><span>Java Spring Boot</span><span>Angular</span><span>PostgreSQL</span></div><button type="button" class="more">Voir le détail →</button></article><article class="hcard" data-cat="fs"><span class="pill fs">Full Stack</span><h3>ECommerce</h3><p class="hm">E-commerce intelligent — web + mobile</p><p>Catalogue, panier, commandes et paiement. Gestion des stocks et notifications</p><div class="add-tags"><span>Node.js</span><span>Express</span><span>React</span></div><button type="button" class="more">Voir le détail →</button></article><article class="hcard" data-cat="fs"><span class="pill fs">Full Stack</span><h3>SmartStock</h3><p class="hm">Gestion et prévision des stocks — Data + DevOps + backend</p><p>Gestion des produits et fournisseurs, entrées/sorties de stock, suivi des commandes. Alertes de rupture de stock</p><div class="add-tags"><span>Java Spring Boot</span><span>Angular</span><span>PostgreSQL</span></div><button type="button" class="more">Voir le détail →</button></article><article class="hcard" data-cat="fs"><span class="pill fs">Full Stack</span><h3>Mini ERP Industriel</h3><p class="hm">Gestion de la maintenance et des équipements</p><p>Gestion des équipements et des interventions. Ordres de travail et pièces de rechange</p><div class="add-tags"><span>C#</span><span>.NET</span><span>ASP.NET Core</span></div><button type="button" class="more">Voir le détail →</button></article><article class="hcard" data-cat="iot"><span class="pill iot">IoT & Embarqué</span><h3>Passerelle IoT industrielle intelligente</h3><p class="hm">Passerelle IoT industrielle</p><p>Acquisition de données capteurs sur STM32. Communication CAN / MQTT vers une passerelle Linux</p><div class="add-tags"><span>STM32</span><span>Zephyr RTOS</span><span>Raspberry Pi</span></div><button type="button" class="more">Voir le détail →</button></article><article class="hcard" data-cat="iot"><span class="pill iot">IoT & Embarqué</span><h3>Système intelligent de suivi énergétique</h3><p class="hm">Monitoring énergétique temps réel</p><p>Acquisition de tension et de courant. Calcul de la puissance et de l’énergie</p><div class="add-tags"><span>STM32</span><span>Zephyr RTOS</span><span>MQTT</span></div><button type="button" class="more">Voir le détail →</button></article><article class="hcard" data-cat="iot"><span class="pill iot">IoT & Embarqué</span><h3>Maintenance prédictive</h3><p class="hm">Moteurs et servomoteurs — IA + IoT</p><p>Kit de monitoring IoT : température, vibration, courant, tension, vitesse. Envoi des données en Wi-Fi/Ethernet via MQTT vers un serveur et un dashboard</p><div class="add-tags"><span>ESP32</span><span>STM32</span><span>MQTT</span></div><button type="button" class="more">Voir le détail →</button></article><article class="hcard" data-cat="iot"><span class="pill iot">IoT & Embarqué</span><h3>Plateforme de diagnostic industriel</h3><p class="hm">Diagnostic, maintenance prédictive et traçabilité</p><p>Suivi du cycle de réparation : réception, diagnostic, devis, réparation, test, livraison. QR code unique et historique complet par équipement</p><div class="add-tags"><span>API</span><span>Base de données</span><span>Dashboard</span></div><button type="button" class="more">Voir le détail →</button></article><article class="hcard" data-cat="iot"><span class="pill iot">IoT & Embarqué</span><h3>Banc de test et diagnostic intelligent</h3><p class="hm">Variateurs et servo-variateurs</p><p>Banc de test post-réparation : tension, courant, température, vibration. Génération de conditions de fonctionnement et détection d’anomalies</p><div class="add-tags"><span>STM32</span><span>ESP32</span><span>RS485 / Modbus</span></div><button type="button" class="more">Voir le détail →</button></article><article class="hcard" data-cat="iot"><span class="pill iot">IoT & Embarqué</span><h3>Microprocesseur RISC sur FPGA</h3><p class="hm">Conception d’un processeur 8/16 bits</p><p>UAL, banc de registres, compteur ordinal, registre d’instruction, unité de contrôle. Mémoire programme (ROM), mémoire de données (RAM) et jeu d’instructions dédié</p><div class="add-tags"><span>VHDL</span><span>ModelSim / Questa</span><span>FPGA Xilinx/AMD</span></div><button type="button" class="more">Voir le détail →</button></article></div></div>
+</div>
 
-<!-- ============ 2) TITRE ============ -->
-<p class="add-headline">Ingénieure Infrastructure IT &amp; Cybersécurité | Cloud (Azure / M365), Réseaux, Sécurité des systèmes</p>
+<div class="page" id="securite" hidden><div class="wrap"><div class="page-hero"><h1>Infrastructure IT &amp; Cybersécurité</h1><p class="tl">Ingénieure Infrastructure IT &amp; Cybersécurité | Cloud (Azure / M365), Réseaux, Sécurité des systèmes</p></div>
 
-
-<!-- ============ 3) EXPÉRIENCE ============ -->
 <section class="add-section" id="experience">
   <h2>Expérience</h2>
 
@@ -158,7 +237,7 @@
 </section>
 
 
-<!-- ============ 4) PROJETS INFRASTRUCTURE & CYBERSÉCURITÉ ============ -->
+
 <section class="add-section" id="infra-projects">
   <h2>Projets Infrastructure IT &amp; Cybersécurité</h2>
   <p class="add-sub">Sept projets couvrant Azure / M365, réseaux, supervision, sauvegarde et réponse à incident.</p>
@@ -168,7 +247,7 @@
     <article class="add-card">
 
       
-      <h3>1. Sécurisation des identités et des accès</h3>
+      <h3>Sécurisation des identités et des accès</h3>
       <div class="add-meta">Entra ID / M365</div>
       <div class="add-label">Description</div>
       <p>Gestion des identités d’un tenant Microsoft 365 de 30 utilisateurs d’une entreprise fictive : moindre privilège (RBAC), MFA, accès conditionnel, PIM, revues d’accès et synchronisation d’un Active Directory local avec Entra ID. Rédaction de la procédure d’arrivée, de mutation et de départ des collaborateurs.</p>
@@ -203,16 +282,6 @@
           <figcaption>Entra ID : utilisateurs et rôles</figcaption>
         </figure>
       </div>
-
-<div class="add-label">Étapes</div>
-      <ol>
-        <li>Création du tenant de lab et de 30 utilisateurs répartis en groupes, vérifiés avec PowerShell (Get-MsolUser).</li>
-        <li>Définition des rôles selon le moindre privilège (RBAC) : administrateur global, sécurité, utilisateurs, helpdesk.</li>
-        <li>Activation du MFA pour tous et mise en place des politiques d’accès conditionnel (MFA, blocage de l’authentification héritée, lieux de confiance).</li>
-        <li>Configuration de PIM (activation temporaire des rôles avec justification) et de revues d’accès.</li>
-        <li>Synchronisation de l’Active Directory local avec Entra ID via Entra Connect.</li>
-        <li>Rédaction de la procédure d’arrivée, de mutation et de départ (Joiner / Mover / Leaver).</li>
-      </ol>
       <div class="add-label">Problème rencontré</div>
       <p class="add-ps is-problem">Des comptes à privilèges élevés restaient actifs en permanence, et une politique d’accès conditionnelle mal réglée risquait de bloquer les administrateurs eux-mêmes.</p>
       <div class="add-label">Solution</div>
@@ -223,7 +292,7 @@
     </article>
 
     <article class="add-card">
-      <h3>2. Infrastructure Azure sécurisée en IaC</h3>
+      <h3>Infrastructure Azure sécurisée en IaC</h3>
       <div class="add-meta">Azure · Terraform / Bicep</div>
       <div class="add-label">Description</div>
       <p>Déploiement reproductible d’un environnement Azure sécurisé : réseau virtuel segmenté, VM Windows et Linux, NSG, administration via Azure Bastion, secrets dans Key Vault, conformité par Azure Policy. Mesure du score Defender for Cloud avant et après correction des recommandations.</p>
@@ -254,15 +323,6 @@
           <figcaption>Entra ID : 30 utilisateurs</figcaption>
         </figure>
       </div>
-
-<div class="add-label">Étapes</div>
-      <ol>
-        <li>Écriture du code Terraform (groupe de ressources, réseau virtuel, sous-réseaux) avec un fichier de variables.</li>
-        <li>Déploiement des machines virtuelles Windows et Linux et des groupes de sécurité réseau (NSG).</li>
-        <li>Administration des VM via Azure Bastion, sans exposition directe des ports d’administration.</li>
-        <li>Stockage des secrets dans Key Vault et application des règles de conformité avec Azure Policy.</li>
-        <li>Relevé du score Defender for Cloud avant puis après correction des recommandations.</li>
-      </ol>
       <div class="add-label">Problème rencontré</div>
       <p class="add-ps is-problem">Un déploiement fait à la main n’était pas reproductible, et les mots de passe risquaient de se retrouver en clair dans le code.</p>
       <div class="add-label">Solution</div>
@@ -273,7 +333,7 @@
     </article>
 
     <article class="add-card">
-      <h3>3. Réseau d’entreprise segmenté avec firewall</h3>
+      <h3>Réseau d’entreprise segmenté avec firewall</h3>
       <div class="add-meta">pfSense / OPNsense · VLAN · VPN</div>
       <div class="add-label">Description</div>
       <p>Réseau virtualisé segmenté en VLAN (utilisateurs, serveurs, invités, DMZ) protégé par un firewall pfSense ou OPNsense : routage inter-VLAN, NAT, règles de filtrage, serveur en DMZ et VPN IPsec (site-à-site et client). Validation par scans Nmap depuis Kali Linux.</p>
@@ -311,15 +371,6 @@
           <figcaption>Règles de filtrage inter-VLAN</figcaption>
         </figure>
       </div>
-
-<div class="add-label">Étapes</div>
-      <ol>
-        <li>Plan d’adressage et découpage en VLAN : utilisateurs (10), serveurs (20), invités (30) et DMZ (40).</li>
-        <li>Configuration des interfaces pfSense, du DHCP et du DNS pour chaque VLAN.</li>
-        <li>Écriture des règles de filtrage inter-VLAN et du NAT.</li>
-        <li>Placement d’un serveur en DMZ et mise en place du VPN IPsec (site-à-site et client).</li>
-        <li>Validation par scans Nmap depuis Kali Linux : ports ouverts et fermés selon chaque VLAN.</li>
-      </ol>
       <div class="add-label">Problème rencontré</div>
       <p class="add-ps is-problem">Par défaut, les règles autorisaient le trafic entre VLAN, ce qui permettait par exemple aux invités d’atteindre les serveurs.</p>
       <div class="add-label">Solution</div>
@@ -330,7 +381,7 @@
     </article>
 
     <article class="add-card">
-      <h3>4. Supervision et détection d’incidents</h3>
+      <h3>Supervision et détection d’incidents</h3>
       <div class="add-meta">Monitoring + SIEM</div>
       <div class="add-label">Description</div>
       <p>Supervision de serveurs Windows et Linux avec Zabbix ou Prometheus / Grafana, puis déploiement du SIEM Wazuh avec règles de détection (brute force, création de compte administrateur, modification de fichiers sensibles). Attaques simulées depuis Kali et traitement complet de l’incident : détection, analyse, confinement, éradication, retour d’expérience.</p>
@@ -364,15 +415,6 @@
           <figcaption>Grafana : vue d'ensemble</figcaption>
         </figure>
       </div>
-
-<div class="add-label">Étapes</div>
-      <ol>
-        <li>Installation de Zabbix et des agents sur les serveurs Windows et Linux, avec déclencheurs sur CPU, disque et services.</li>
-        <li>Création de tableaux de bord Grafana pour suivre CPU, mémoire et disque.</li>
-        <li>Déploiement du SIEM Wazuh et des agents, puis écriture de règles de détection (brute force, nouveau compte administrateur, fichiers sensibles).</li>
-        <li>Simulation d’attaques depuis Kali (scan Nmap, brute force SSH avec Hydra).</li>
-        <li>Traitement de l’incident : détection, analyse, confinement, éradication et retour d’expérience.</li>
-      </ol>
       <div class="add-label">Problème rencontré</div>
       <p class="add-ps is-problem">Trop d’alertes de faible importance noyaient les événements réellement critiques, comme le brute force SSH.</p>
       <div class="add-label">Solution</div>
@@ -383,7 +425,7 @@
     </article>
 
     <article class="add-card">
-      <h3>5. Sauvegarde, restauration et PRA</h3>
+      <h3>Sauvegarde, restauration et PRA</h3>
       <div class="add-meta">Veeam · Azure Backup</div>
       <div class="add-label">Description</div>
       <p>Définition des systèmes critiques et des objectifs RTO / RPO, politique de sauvegarde selon la règle 3-2-1 avec Veeam Community Edition (Azure Backup en option), simulation de sinistres (suppression de VM, chiffrement de fichiers) et restaurations chronométrées. Rédaction du PRA et du calendrier de tests.</p>
@@ -413,15 +455,6 @@
           <figcaption>Fichiers restaurés</figcaption>
         </figure>
       </div>
-
-<div class="add-label">Étapes</div>
-      <ol>
-        <li>Identification des systèmes critiques et définition des objectifs RTO et RPO.</li>
-        <li>Mise en place des sauvegardes selon la règle 3-2-1 avec Veeam, chiffrement et planification automatique (Azure Backup en option).</li>
-        <li>Simulation de sinistres : suppression d’une VM et ransomware simulé chiffrant des fichiers en .locked.</li>
-        <li>Restaurations chronométrées : la VM est de nouveau prête environ 8 minutes après le lancement, selon le journal de restauration.</li>
-        <li>Rédaction du PRA et du calendrier de tests.</li>
-      </ol>
       <div class="add-label">Problème rencontré</div>
       <p class="add-ps is-problem">Après le chiffrement des fichiers, il fallait restaurer un état sain sans reprendre des données déjà infectées, dans le délai fixé par le RTO.</p>
       <div class="add-label">Solution</div>
@@ -432,7 +465,7 @@
     </article>
 
     <article class="add-card">
-      <h3>6. Migration et sécurisation du SI d’une PME</h3>
+      <h3>Migration et sécurisation du SI d’une PME</h3>
       <div class="add-meta">Infrastructure hybride</div>
       <div class="add-label">Description</div>
       <p>Modernisation du système d’information d’une PME fictive de 50 utilisateurs, de l’audit et du cahier des charges à la recette : Active Directory local, réseau segmenté et firewall, VPN vers Azure, Entra ID et M365, supervision, SIEM, sauvegarde et PRA, support N2/N3 avec GLPI, puis soutenance.</p>
@@ -458,16 +491,6 @@
           <figcaption>Wazuh : événements de sécurité</figcaption>
         </figure>
       </div>
-
-<div class="add-label">Étapes</div>
-      <ol>
-        <li>Audit de l’existant et rédaction du cahier des charges pour une PME de 50 utilisateurs.</li>
-        <li>Mise en place de l’Active Directory local avec stratégies de groupe (GPO) et du réseau segmenté avec firewall.</li>
-        <li>Création du VPN vers Azure et déploiement des machines virtuelles avec Terraform.</li>
-        <li>Intégration d’Entra ID et de Microsoft 365, avec synchronisation des comptes.</li>
-        <li>Ajout de la supervision, du SIEM, de la sauvegarde et du PRA, puis du support N2/N3 avec GLPI.</li>
-        <li>Recette, tests de validation et soutenance.</li>
-      </ol>
       <div class="add-label">Problème rencontré</div>
       <p class="add-ps is-problem">Il fallait migrer vers le cloud sans interrompre le service, tout en gardant des identités cohérentes entre l’annuaire local et Entra ID.</p>
       <div class="add-label">Solution</div>
@@ -478,7 +501,7 @@
     </article>
 
     <article class="add-card">
-      <h3>7. Mini-SOC et plateforme Zero Trust</h3>
+      <h3>Mini-SOC et plateforme Zero Trust</h3>
       <div class="add-meta">SOC · Zero Trust</div>
       <div class="add-label">Description</div>
       <p>Plateforme de sécurité de lab combinant réseau segmenté, identités Zero Trust (Entra ID, MFA, accès conditionnel, PIM), landing zone Azure, SIEM et supervision. Scénarios d’attaque simulés en lab isolé (brute force, mouvement latéral, ransomware simulé), analyse, confinement, restauration et politique de sécurité inspirée d’ISO 27001 et du guide ANSSI.</p>
@@ -520,16 +543,6 @@
           <figcaption>GLPI : gestion des incidents</figcaption>
         </figure>
       </div>
-
-<div class="add-label">Étapes</div>
-      <ol>
-        <li>Segmentation du réseau avec pfSense (VLAN utilisateurs, serveurs et DMZ).</li>
-        <li>Mise en place de l’approche Zero Trust : Entra ID, MFA, accès conditionnel et PIM.</li>
-        <li>Déploiement de la landing zone Azure avec Terraform.</li>
-        <li>Supervision avec Zabbix et Grafana, et détection avec Wazuh.</li>
-        <li>Attaques simulées depuis Kali en lab isolé : scan Nmap, brute force, mouvement latéral, ransomware simulé.</li>
-        <li>Analyse, confinement et restauration, suivis dans GLPI, puis rédaction d’une politique de sécurité inspirée d’ISO 27001 et du guide ANSSI.</li>
-      </ol>
       <div class="add-label">Problème rencontré</div>
       <p class="add-ps is-problem">Sans vue d’ensemble, les attaques simulées passaient inaperçues parce que les outils de supervision, de détection et de suivi des incidents n’étaient pas reliés.</p>
       <div class="add-label">Solution</div>
@@ -540,4 +553,64 @@
     </article>
 
   </div>
-</section>
+</section></div></div>
+
+<div class="page" id="fullstack" hidden><div class="wrap"><div class="page-hero"><h1>Développement Full Stack</h1><p>Applications web et mobile : backend, frontend, bases de données, DevOps et IA appliquée.</p></div>
+
+<div class="grid"><article class="card"><p class="card__tag">Plateforme de recrutement IA / NLP</p><h3>Recruitini</h3><p class="card__ctx">Projet académique · Agile/Scrum</p>
+<ul class="card__feats"><li>Gestion des candidats et des offres d’emploi</li><li>Dépôt de CV et analyse automatique des CV</li><li>Matching CV–offre et scoring des candidats</li><li>Tableau de bord RH et statistiques</li></ul><p class="card__t">TECHNOLOGIES</p><ul class="chips"><li>Java Spring Boot</li><li>Angular</li><li>PostgreSQL</li><li>Python</li><li>NLP</li><li>scikit-learn</li><li>Docker</li><li>Git</li></ul></article><article class="card"><p class="card__tag">E-commerce intelligent — web + mobile</p><h3>ECommerce</h3><p class="card__ctx">Projet académique · Agile/Scrum</p>
+<ul class="card__feats"><li>Catalogue, panier, commandes et paiement</li><li>Gestion des stocks et notifications</li><li>Recommandations personnalisées et analyse du comportement client</li><li>Tableau de bord administrateur</li></ul><p class="card__t">TECHNOLOGIES</p><ul class="chips"><li>Node.js</li><li>Express</li><li>React</li><li>React Native</li><li>MySQL</li><li>MongoDB</li><li>Docker</li><li>Git</li></ul></article><article class="card"><p class="card__tag">Gestion et prévision des stocks — Data + DevOps + backend</p><h3>SmartStock</h3><p class="card__ctx">Projet académique · Agile/Scrum · API REST + microservices</p>
+<ul class="card__feats"><li>Gestion des produits et fournisseurs, entrées/sorties de stock, suivi des commandes</li><li>Alertes de rupture de stock</li><li>Prévision de la demande et détection d’anomalies</li><li>Tableaux de bord analytiques</li></ul><p class="card__t">TECHNOLOGIES</p><ul class="chips"><li>Java Spring Boot</li><li>Angular</li><li>PostgreSQL</li><li>MongoDB</li><li>Python</li><li>Pandas</li><li>scikit-learn</li><li>Docker</li><li>Git</li></ul></article><article class="card"><p class="card__tag">Gestion de la maintenance et des équipements</p><h3>Mini ERP Industriel</h3><p class="card__ctx">Logiciel · Industrie</p>
+<ul class="card__feats"><li>Gestion des équipements et des interventions</li><li>Ordres de travail et pièces de rechange</li><li>KPI de maintenance</li></ul><p class="card__t">TECHNOLOGIES</p><ul class="chips"><li>C#</li><li>.NET</li><li>ASP.NET Core</li><li>SQL Server</li><li>React</li><li>API REST</li></ul></article></div></div></div>
+
+<div class="page" id="iot" hidden><div class="wrap"><div class="page-hero"><h1>IoT &amp; Systèmes embarqués</h1><p>De l’acquisition de capteurs et de la conception FPGA aux passerelles Linux et à la maintenance prédictive.</p></div>
+
+<div class="grid"><article class="card"><p class="card__tag">Passerelle IoT industrielle</p><h3>Passerelle IoT industrielle intelligente</h3><p class="card__ctx">Embarqué · IoT</p>
+<ul class="card__feats"><li>Acquisition de données capteurs sur STM32</li><li>Communication CAN / MQTT vers une passerelle Linux</li><li>Dashboard de supervision et détection d’anomalies</li><li>Watchdog et gestion d’erreurs</li></ul><p class="card__t">TECHNOLOGIES</p><ul class="chips"><li>STM32</li><li>Zephyr RTOS</li><li>Raspberry Pi</li><li>Linux</li><li>MQTT</li><li>CAN</li></ul></article><article class="card"><p class="card__tag">Monitoring énergétique temps réel</p><h3>Système intelligent de suivi énergétique</h3><p class="card__ctx">Embarqué · IoT</p>
+<ul class="card__feats"><li>Acquisition de tension et de courant</li><li>Calcul de la puissance et de l’énergie</li><li>Transmission MQTT vers une passerelle Linux</li><li>Dashboard temps réel et détection d’anomalies de consommation</li></ul><p class="card__t">TECHNOLOGIES</p><ul class="chips"><li>STM32</li><li>Zephyr RTOS</li><li>MQTT</li><li>Linux embarqué</li></ul></article><article class="card"><p class="card__tag">Moteurs et servomoteurs — IA + IoT</p><h3>Maintenance prédictive</h3><p class="card__ctx">Embarqué · IoT · Machine Learning</p>
+<ul class="card__feats"><li>Kit de monitoring IoT : température, vibration, courant, tension, vitesse</li><li>Envoi des données en Wi-Fi/Ethernet via MQTT vers un serveur et un dashboard</li><li>Pipeline ML : données normales et défauts, extraction de caractéristiques</li><li>Classification Normal / Alerte / Défaut avec alerte d’inspection</li></ul><p class="card__t">TECHNOLOGIES</p><ul class="chips"><li>ESP32</li><li>STM32</li><li>MQTT</li><li>FastAPI</li><li>PostgreSQL</li><li>SQLite</li><li>Grafana</li><li>scikit-learn</li></ul></article><article class="card"><p class="card__tag">Diagnostic, maintenance prédictive et traçabilité</p><h3>Plateforme de diagnostic industriel</h3><p class="card__ctx">Embarqué · IoT · Backend</p>
+<ul class="card__feats"><li>Suivi du cycle de réparation : réception, diagnostic, devis, réparation, test, livraison</li><li>QR code unique et historique complet par équipement</li><li>Banc de test → API → base de données → dossier équipement → rapport automatique</li><li>Intégration de capteurs IoT</li></ul><p class="card__t">TECHNOLOGIES</p><ul class="chips"><li>API</li><li>Base de données</li><li>Dashboard</li><li>QR code</li><li>MQTT</li><li>Modbus</li></ul></article><article class="card"><p class="card__tag">Variateurs et servo-variateurs</p><h3>Banc de test et diagnostic intelligent</h3><p class="card__ctx">Embarqué · Application desktop</p>
+<ul class="card__feats"><li>Banc de test post-réparation : tension, courant, température, vibration</li><li>Génération de conditions de fonctionnement et détection d’anomalies</li><li>Application PC avec enregistrement automatique des mesures</li><li>Génération de rapports de test PDF</li></ul><p class="card__t">TECHNOLOGIES</p><ul class="chips"><li>STM32</li><li>ESP32</li><li>RS485 / Modbus</li><li>Python</li><li>PyQt</li><li>SQLite</li></ul></article><article class="card"><p class="card__tag">Conception d’un processeur 8/16 bits</p><h3>Microprocesseur RISC sur FPGA</h3><p class="card__ctx">Conception numérique</p>
+<ul class="card__feats"><li>UAL, banc de registres, compteur ordinal, registre d’instruction, unité de contrôle</li><li>Mémoire programme (ROM), mémoire de données (RAM) et jeu d’instructions dédié</li><li>Cycle fetch–decode–execute–memory–write back validé par testbenches</li><li>Extensions : pipeline 2–3 étages, interruptions, UART, GPIO, timer, interface de debug</li></ul><p class="card__t">TECHNOLOGIES</p><ul class="chips"><li>VHDL</li><li>ModelSim / Questa</li><li>FPGA Xilinx/AMD</li><li>Intel FPGA</li></ul></article></div></div></div>
+</main>
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true"><div class="modal__box"><button class="modal__x" type="button" aria-label="Fermer">×</button><div id="modalBody"></div></div></div>
+<footer class="foot"><div class="wrap">Sirine Bensalah · Ingénieure Infotronique, ENICarthage 2026 · <a href="mailto:sirine.bensalah@enicar.ucar.tn">sirine.bensalah@enicar.ucar.tn</a></div></footer>
+<script>
+const tabs=[...document.querySelectorAll('.tabs button')],pages=[...document.querySelectorAll('.page')];
+function show(id,push){if(!pages.some(p=>p.id===id))id='accueil';
+pages.forEach(p=>p.hidden=p.id!==id);tabs.forEach(b=>b.setAttribute('aria-selected',b.dataset.p===id));
+if(push){try{history.replaceState(null,'','#'+id)}catch(e){}}window.scrollTo(0,0);}
+tabs.forEach(b=>b.addEventListener('click',()=>show(b.dataset.p,true)));
+addEventListener('hashchange',()=>show(location.hash.slice(1)));
+document.querySelector('[data-go=projets]').addEventListener('click',e=>{e.preventDefault();document.getElementById('projets').scrollIntoView({behavior:'smooth'})});
+document.getElementById('filters').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+document.querySelectorAll('#filters button').forEach(x=>x.setAttribute('aria-pressed',x===b));
+document.querySelectorAll('.hcard').forEach(c=>c.hidden=!(b.dataset.f==='all'||c.dataset.cat===b.dataset.f));});
+show(location.hash.slice(1));
+const details=[...document.querySelectorAll('#securite article, #fullstack article, #iot article')];
+const modal=document.getElementById('modal'),mb=document.getElementById('modalBody');
+function openD(i){const a=details[i];if(!a)return;mb.innerHTML='';mb.appendChild(a.cloneNode(true));
+mb.querySelectorAll('img').forEach(im=>im.loading='eager');modal.hidden=false;modal.scrollTop=0;document.body.classList.add('noscroll');}
+function closeD(){modal.hidden=true;mb.innerHTML='';document.body.classList.remove('noscroll');}
+document.querySelectorAll('.hcard').forEach((c,i)=>{c.tabIndex=0;c.addEventListener('click',()=>openD(i));c.addEventListener('keydown',e=>{if(e.key==='Enter'){openD(i)}});});
+modal.addEventListener('click',e=>{if(e.target===modal||e.target.closest('.modal__x'))closeD();});
+addEventListener('keydown',e=>{if(e.key==='Escape'&&!modal.hidden)closeD();});
+
+const MAIL='sirine.bensalah@enicar.ucar.tn',TEL='+216 53 266 267';/* ← mettez votre numéro ici, ex. '+216 12 345 678' */
+const D=TEL.replace(/\D/g,''),INTL=D.length===8?'216'+D:D;
+document.getElementById('contactBtn').addEventListener('click',()=>{
+mb.innerHTML=`<div class="contact"><h3>Me contacter</h3><p>Choisissez comment m’écrire :</p><span class="mail">${MAIL}</span>${TEL?`<span class="mail">${TEL}</span>`:''}
+<div class="opts"><a class="btn primary" href="mailto:${MAIL}?subject=Contact%20depuis%20votre%20portfolio">Application mail</a>
+<a class="btn" target="_blank" rel="noopener" href="https://mail.google.com/mail/?view=cm&fs=1&to=${MAIL}&su=Contact%20depuis%20votre%20portfolio">Gmail</a>
+<a class="btn" target="_blank" rel="noopener" href="https://outlook.office.com/mail/deeplink/compose?to=${MAIL}&subject=Contact%20depuis%20votre%20portfolio">Outlook</a>
+${TEL?`<a class="btn primary" href="tel:+${INTL}">Appeler</a><a class="btn" target="_blank" rel="noopener" href="https://wa.me/${INTL}?text=Bonjour%20Sirine%2C">WhatsApp</a>`:''}
+<button type="button" class="btn" id="copyMail">Copier l’adresse</button><span class="ok" id="copyOk"></span></div></div>`;
+modal.hidden=false;modal.scrollTop=0;document.body.classList.add('noscroll');
+document.getElementById('copyMail').onclick=()=>{const o=document.getElementById('copyOk');
+const done=ok=>{o.textContent=ok?'Copié ✓':'Sélectionnez et copiez (Ctrl+C)';
+if(!ok){const m=mb.querySelector('.mail'),r=document.createRange();r.selectNodeContents(m);const s=getSelection();s.removeAllRanges();s.addRange(r);}};
+const fb=()=>{const t=document.createElement('textarea');t.value=MAIL;t.style.cssText='position:fixed;opacity:0;top:0;left:0';mb.appendChild(t);t.focus();t.select();
+let ok=false;try{ok=document.execCommand('copy')}catch(e){}t.remove();done(ok)};
+try{navigator.clipboard.writeText(MAIL).then(()=>done(true),fb)}catch(e){fb()}};
+});
+</script></body></html>
